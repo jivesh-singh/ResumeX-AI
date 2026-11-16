@@ -218,10 +218,20 @@
     </div>
 
     <!-- Career Trajectory Guidance -->
-    <div class="feedback-card">
+    <div class="feedback-card" id="dash-career-card">
       <div class="card-title-row">
-        <h3><i class="fa-solid fa-compass" style="color:var(--primary);"></i> Career Trajectory & Interview Readiness Advisory</h3>
-        <span class="pill-badge">Strategy</span>
+        <h3><i class="fa-solid fa-compass" style="color:var(--primary);"></i> Career Trajectory & Perfect Job Match</h3>
+        <span class="pill-badge" id="dash-target-role-badge">Career Strategy</span>
+      </div>
+      <div id="dash-career-role-banner" style="display:none; background:var(--gradient-soft); border:1px solid rgba(99, 102, 241, 0.25); border-radius:12px; padding:16px 20px; margin-bottom:18px; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+        <div>
+          <div style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--primary); letter-spacing:0.04em;">Your Synthesized Best-Fit Role:</div>
+          <h4 id="dash-primary-role-title" style="font-size:1.25rem; font-weight:800; color:var(--text-main); margin-top:2px;">Full-Stack Software Engineer</h4>
+          <p id="dash-primary-role-desc" style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">Based on your latest resume scan metrics and verified skill matrix.</p>
+        </div>
+        <a href="analyzer.html" class="btn btn-primary btn-sm">
+          <i class="fa-solid fa-route"></i> Open Action Roadmap
+        </a>
       </div>
       <p style="font-size:0.92rem; color:var(--text-muted); margin-bottom:16px;">
         Based on industry hiring standards, here is how to translate your ATS optimization into interview performance:

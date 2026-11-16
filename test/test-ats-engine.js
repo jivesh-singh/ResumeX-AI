@@ -284,6 +284,60 @@ it('generateReport compiles a full text report with all 7 criteria and data', ()
   assert(report.includes('7. Readability & Format:'), 'Criterion 7 present');
   assert(report.includes('[MATCHED TECHNICAL SKILLS]'), 'Matched skills present');
   assert(report.includes('[ACTIONABLE IMPROVEMENT SUGGESTIONS]'), 'Suggestions present');
+  assert(report.includes('[🎯 YOUR PERFECT JOB MATCH & ACTIONABLE ROADMAP]'), 'Career fit section present in report');
+  assert(report.includes('HOW TO GET INTO THIS JOB: 4-PHASE ACTION ROADMAP'), 'Actionable roadmap present in report');
+});
+
+console.log('\n--- 5. Career Advisory & Perfect Job Match Tests ---');
+
+it('Career Advisory identifies primary best-fit job role and compatibility score', () => {
+  const analysis = AtsEngine.analyzeResume(RESUME_SENIOR_DEV, JD_SOFTWARE_ENGINEER);
+  assert(analysis.careerFit, 'careerFit must be present in analysis result');
+  assert(analysis.careerFit.primaryRole, 'primaryRole must be present');
+  
+  console.log(`     -> Developer Resume Best-Fit Role: "${analysis.careerFit.primaryRole.title}" (${analysis.careerFit.primaryRole.matchScore}% Match, ${analysis.careerFit.primaryRole.level})`);
+  assert(analysis.careerFit.primaryRole.title.includes('Full-Stack') || analysis.careerFit.primaryRole.title.includes('Software Engineer'), 'Should identify full stack / software engineer role');
+  assert(analysis.careerFit.primaryRole.matchScore >= 75, 'Senior developer should score >= 75% compatibility');
+  assert(analysis.careerFit.primaryRole.whyPerfect.length >= 2, 'Should provide concrete reasons why role fits');
+  assert(analysis.careerFit.primaryRole.typicalSalaryRange.includes('$'), 'Should provide realistic salary benchmark');
+});
+
+it('Career Advisory accurately adapts primary role for AI / Data Science candidates', () => {
+  const analysis = AtsEngine.analyzeResume(RESUME_JUNIOR_DATA_SCIENTIST, JD_DATA_SCIENTIST);
+  console.log(`     -> Data Scientist Best-Fit Role: "${analysis.careerFit.primaryRole.title}" (${analysis.careerFit.primaryRole.matchScore}% Match)`);
+  
+  assert(analysis.careerFit.primaryRole.title.includes('AI') || 
+         analysis.careerFit.primaryRole.title.includes('Machine Learning') || 
+         analysis.careerFit.primaryRole.title.includes('Data'), 
+         'Should identify AI/ML/Data role as top fit');
+  assert(analysis.careerFit.adjacentRoles.length >= 2, 'Should provide at least 2 alternative career paths');
+});
+
+it('Career Advisory generates a 4-phase concrete roadmap with project blueprint & interview tips', () => {
+  const analysis = AtsEngine.analyzeResume(RESUME_SENIOR_DEV, JD_SOFTWARE_ENGINEER);
+  const roadmap = analysis.careerFit.roadmap;
+
+  assert(roadmap, 'Roadmap must be generated');
+  assert.strictEqual(roadmap.phases.length, 4, 'Roadmap must contain exactly 4 chronological phases');
+  
+  // Phase 1: Resume Refinements
+  assert.strictEqual(roadmap.phases[0].phase, 1);
+  assert(roadmap.phases[0].actions.length >= 2, 'Phase 1 must provide resume actions');
+
+  // Phase 2: Skill Bridging
+  assert.strictEqual(roadmap.phases[1].phase, 2);
+  assert(roadmap.phases[1].actions.length >= 1, 'Phase 2 must identify skill bridging actions');
+  assert(roadmap.phases[1].actions[0].timeEstimate, 'Must include estimated completion time');
+
+  // Phase 3: Portfolio Project Blueprint
+  assert.strictEqual(roadmap.phases[2].phase, 3);
+  assert(roadmap.phases[2].projectBlueprint.name, 'Phase 3 must provide project name');
+  assert(roadmap.phases[2].projectBlueprint.techStack.length >= 3, 'Phase 3 must recommend specific tech stack');
+  assert(roadmap.phases[2].projectBlueprint.deliverables.length >= 2, 'Phase 3 must specify verifiable deliverables');
+
+  // Phase 4: Interview & Application Strategy
+  assert.strictEqual(roadmap.phases[3].phase, 4);
+  assert(roadmap.phases[3].actions.length >= 2, 'Phase 4 must provide interview tips and outreach strategy');
 });
 
 console.log('\n====================================================');

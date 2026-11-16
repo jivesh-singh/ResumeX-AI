@@ -206,6 +206,27 @@ function renderDashboardMetrics(scans) {
   if (highEl) highEl.textContent = `${highest}%`;
   if (avgEl) avgEl.textContent = `${average}%`;
   if (keywordsEl) keywordsEl.textContent = totalMatchedKeywords;
+
+  // Render Career Trajectory Highlight Banner if scans exist
+  const careerBanner = document.getElementById('dash-career-role-banner');
+  const primaryTitleEl = document.getElementById('dash-primary-role-title');
+  const primaryDescEl = document.getElementById('dash-primary-role-desc');
+  const targetBadge = document.getElementById('dash-target-role-badge');
+
+  if (scans.length > 0 && careerBanner) {
+    const latest = scans[0];
+    const roleTitle = latest.targetRole || latest.careerFit?.primaryRole?.title || latest.jobTitle;
+    const matchScore = latest.careerFit?.primaryRole?.matchScore || latest.overallScore;
+
+    if (roleTitle) {
+      careerBanner.style.display = 'flex';
+      if (primaryTitleEl) primaryTitleEl.textContent = roleTitle;
+      if (targetBadge) targetBadge.textContent = `${matchScore}% Fit Match`;
+      if (primaryDescEl && latest.careerFit?.primaryRole?.summary) {
+        primaryDescEl.textContent = latest.careerFit.primaryRole.summary;
+      }
+    }
+  }
 }
 
 function renderDashboardCharts(scans) {
@@ -319,7 +340,7 @@ function renderScansTable(scans) {
             <span>${escapeHtml(scan.fileName)}</span>
           </div>
         </td>
-        <td>${escapeHtml(scan.jobTitle || 'General Software Engineering')}</td>
+        <td>${escapeHtml(scan.targetRole || scan.jobTitle || 'General Software Engineering')}</td>
         <td>
           <span style="font-weight: 800; font-size: 1.05rem; color: ${scan.overallScore >= 80 ? '#10b981' : '#4f46e5'};">
             ${scan.overallScore}%

@@ -172,7 +172,10 @@
           <i class="fa-solid fa-circle-check" style="font-size: 1.2rem;"></i>
           <span>100-Point ATS Analysis Complete: Evaluated via deterministic scoring engine.</span>
         </div>
-        <div>
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <a href="#career-advisory-section" class="btn btn-secondary btn-sm" style="font-size:0.75rem; padding:4px 12px; background:#fff;">
+            <i class="fa-solid fa-compass" style="color:var(--primary);"></i> Perfect Job Match & Roadmap
+          </a>
           <span class="pill-badge" id="results-doc-badge" style="background:#fff; border-color:#a7f3d0; font-size:0.75rem;">Document Verified</span>
         </div>
       </div>
@@ -398,6 +401,51 @@
         <ul class="recommendations-list" id="recommendations-list">
           <!-- Populated dynamically -->
         </ul>
+      </div>
+
+      <!-- Career Advisory: Perfect Job Match & Action Plan -->
+      <div class="career-advisory-section" id="career-advisory-section">
+        <!-- Section Header -->
+        <div class="career-section-header">
+          <div class="career-header-badge">
+            <i class="fa-solid fa-compass"></i> Career Trajectory Advisory
+          </div>
+          <h2>Your Perfect Job Match & Action Plan</h2>
+          <p>
+            Synthesized from your verified skill profile, experience depth, and target job description: here is your highest-compatibility role archetype and a 4-phase strategic gameplan to land it.
+          </p>
+        </div>
+
+        <!-- Primary Match Hero Card -->
+        <div class="career-hero-card" id="career-hero-card">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+        <!-- Adjacent / Alternative Career Paths -->
+        <div class="adjacent-roles-container">
+          <div class="card-title-row" style="margin-bottom: 14px;">
+            <h3><i class="fa-solid fa-arrows-split-up-and-left" style="color:var(--primary);"></i> Alternative & Adjacent High-Fit Roles</h3>
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Expand your career opportunities</span>
+          </div>
+          <div class="adjacent-roles-grid" id="adjacent-roles-grid">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+
+        <!-- "How To Land This Job" 4-Phase Roadmap -->
+        <div class="roadmap-card">
+          <div class="card-title-row" style="margin-bottom: 8px;">
+            <h3><i class="fa-solid fa-route" style="color:var(--primary);"></i> How To Land This Job: 4-Phase Strategic Roadmap</h3>
+            <span class="pill-badge" id="roadmap-role-badge" style="font-size:0.75rem;">Action Plan</span>
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 24px;">
+            Follow this chronological step-by-step gameplan to optimize your resume, bridge critical skill gaps, build verifiable proof-of-work, and master role-specific interviews.
+          </p>
+
+          <div class="roadmap-timeline" id="roadmap-timeline">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
       </div>
 
       <!-- Bottom CTAs -->

@@ -438,6 +438,11 @@ Key Requirements:
 
     // 7. Render Improvement Suggestions
     renderSuggestionsList(analysis.suggestions);
+
+    // 8. Render Career Advisory: Perfect Job Match & 4-Phase Roadmap
+    if (analysis.careerFit) {
+      renderCareerAdvisory(analysis.careerFit);
+    }
   }
 
   function setCriteriaRow(valId, barId, score, max) {
@@ -677,6 +682,211 @@ Key Requirements:
   }
 
   /**
+   * Renders the Career Advisory & Job Matching section
+   */
+  function renderCareerAdvisory(careerFit) {
+    if (!careerFit) return;
+
+    // 1. Render Hero Primary Match Card
+    const heroCard = document.getElementById('career-hero-card');
+    if (heroCard && careerFit.primaryRole) {
+      const p = careerFit.primaryRole;
+      heroCard.innerHTML = `
+        <div class="career-hero-top">
+          <div class="career-role-title-group">
+            <div class="career-role-eyebrow">
+              <i class="fa-solid fa-crown" style="color:#eab308;"></i> Highest Compatibility Match
+            </div>
+            <h3 class="career-role-title">${escapeHtml(p.title)}</h3>
+            <div class="career-hero-badges">
+              <span class="pill-badge" style="background:var(--success-bg); color:#065f46; border-color:var(--success-border); font-size:0.75rem;">
+                <i class="fa-solid fa-layer-group"></i> ${escapeHtml(p.level)} Tier
+              </span>
+              <span class="pill-badge" style="font-size:0.75rem;">
+                <i class="fa-solid fa-sparkles" style="color:var(--primary);"></i> ${escapeHtml(p.matchTier)}
+              </span>
+            </div>
+          </div>
+          <div class="career-score-pill">
+            <span class="career-score-pill-number">${p.matchScore}%</span>
+            <div class="career-score-pill-label">
+              Role Match<br>Affinity
+            </div>
+          </div>
+        </div>
+
+        <div class="career-meta-grid">
+          <div class="career-meta-item">
+            <span class="career-meta-label"><i class="fa-solid fa-chart-line"></i> Market Demand</span>
+            <span class="career-meta-value">${escapeHtml(p.marketDemand)}</span>
+          </div>
+          <div class="career-meta-item">
+            <span class="career-meta-label"><i class="fa-solid fa-money-bill-wave"></i> Typical Compensation</span>
+            <span class="career-meta-value" style="color:var(--primary);">${escapeHtml(p.typicalSalaryRange)}</span>
+          </div>
+          <div class="career-meta-item" style="grid-column: 1 / -1;">
+            <span class="career-meta-label"><i class="fa-solid fa-compass"></i> Role Foundation</span>
+            <span class="career-meta-value" style="font-weight: 500; font-size: 0.88rem; color: var(--text-body); line-height: 1.5;">${escapeHtml(p.summary)}</span>
+          </div>
+        </div>
+
+        <div class="career-hero-why">
+          <h4><i class="fa-solid fa-circle-check" style="color:var(--success);"></i> Why This Job Is Perfect For You</h4>
+          <ul>
+            ${p.whyPerfect.map(item => `
+              <li>
+                <i class="fa-solid fa-check"></i>
+                <span>${escapeHtml(item)}</span>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+      `;
+    }
+
+    // 2. Render Adjacent / Alternative Roles Grid
+    const adjacentGrid = document.getElementById('adjacent-roles-grid');
+    if (adjacentGrid && Array.isArray(careerFit.adjacentRoles)) {
+      adjacentGrid.innerHTML = careerFit.adjacentRoles.map(role => `
+        <div class="adjacent-role-card">
+          <div>
+            <div class="adjacent-role-top">
+              <h4 class="adjacent-role-title">${escapeHtml(role.title)}</h4>
+              <span class="adjacent-role-score">${role.matchScore}% Match</span>
+            </div>
+            <p class="adjacent-role-desc">${escapeHtml(role.reason)}</p>
+          </div>
+          <div class="adjacent-role-bridge">
+            <i class="fa-solid fa-arrow-right" style="color:var(--primary); margin-right:4px;"></i> Key Bridge Skill: <strong>${escapeHtml(role.keyBridgeSkill)}</strong>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // 3. Render 4-Phase Chronological Roadmap
+    const roadmapTimeline = document.getElementById('roadmap-timeline');
+    const roadmapRoleBadge = document.getElementById('roadmap-role-badge');
+    if (roadmapRoleBadge && careerFit.roadmap) {
+      roadmapRoleBadge.textContent = careerFit.roadmap.targetRoleTitle;
+    }
+
+    if (roadmapTimeline && careerFit.roadmap && Array.isArray(careerFit.roadmap.phases)) {
+      roadmapTimeline.innerHTML = careerFit.roadmap.phases.map(phase => {
+        let bodyHtml = '';
+
+        if (phase.phase === 1) {
+          // Resume Refinements
+          bodyHtml = `
+            <div class="roadmap-items-list">
+              ${phase.actions.map(act => `
+                <div class="roadmap-action-box">
+                  <div class="roadmap-action-box-title">
+                    <i class="fa-solid fa-check-circle" style="color:var(--primary);"></i>
+                    <span>${escapeHtml(act.label)}</span>
+                  </div>
+                  <div class="roadmap-action-box-desc">${escapeHtml(act.detail)}</div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        } else if (phase.phase === 2) {
+          // Skill Bridging
+          bodyHtml = `
+            <div class="roadmap-items-list">
+              ${phase.actions.map(act => `
+                <div class="roadmap-action-box">
+                  <div class="roadmap-action-box-title" style="justify-content: space-between;">
+                    <div style="display:flex; align-items:center; gap:6px;">
+                      <i class="fa-solid fa-bolt" style="color:#f59e0b;"></i>
+                      <span>${escapeHtml(act.skill)}</span>
+                    </div>
+                    <span class="pill-badge" style="font-size:0.7rem; background:#fffbeb; color:#b45309; border-color:#fde68a;">
+                      <i class="fa-regular fa-clock"></i> ~${escapeHtml(act.timeEstimate)}
+                    </span>
+                  </div>
+                  <div class="roadmap-action-box-desc">${escapeHtml(act.objective)}</div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        } else if (phase.phase === 3) {
+          // Portfolio Project Blueprint
+          const bp = phase.projectBlueprint;
+          bodyHtml = `
+            <div class="roadmap-action-box" style="background:#ffffff; border-color:rgba(99, 102, 241, 0.3);">
+              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+                <h5 style="font-size:0.95rem; font-weight:800; color:var(--text-main); margin:0;">
+                  <i class="fa-solid fa-laptop-code" style="color:var(--primary); margin-right:6px;"></i>
+                  ${escapeHtml(bp.name)}
+                </h5>
+                <span class="pill-badge" style="font-size:0.7rem; background:var(--gradient-soft); color:var(--primary);">
+                  Flagship Proof-of-Work
+                </span>
+              </div>
+              <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:12px; line-height:1.5;">
+                ${escapeHtml(bp.concept)}
+              </p>
+              <div style="margin-bottom:12px;">
+                <span style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); letter-spacing:0.04em;">Recommended Tech Stack:</span>
+                <div class="blueprint-meta-row">
+                  ${bp.techStack.map(tech => `
+                    <span class="pill-badge" style="font-size:0.75rem; background:#f1f5f9; color:var(--text-body); border-color:#e2e8f0;">${escapeHtml(tech)}</span>
+                  `).join('')}
+                </div>
+              </div>
+              <div>
+                <span style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); letter-spacing:0.04em;">Key Deliverables to Prove Competence:</span>
+                <ul class="blueprint-deliverables-list">
+                  ${bp.deliverables.map(d => `
+                    <li>
+                      <i class="fa-solid fa-circle-check"></i>
+                      <span>${escapeHtml(d)}</span>
+                    </li>
+                  `).join('')}
+                </ul>
+              </div>
+            </div>
+          `;
+        } else if (phase.phase === 4) {
+          // Interview Mastery
+          bodyHtml = `
+            <div class="roadmap-items-list">
+              ${phase.actions.map(act => `
+                <div class="roadmap-action-box">
+                  <div class="roadmap-action-box-title">
+                    <i class="fa-solid fa-comments" style="color:var(--primary);"></i>
+                    <span>${escapeHtml(act.topic)}</span>
+                  </div>
+                  <div class="roadmap-action-box-desc">${escapeHtml(act.tips)}</div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }
+
+        return `
+          <div class="roadmap-step">
+            <div class="roadmap-step-badge">
+              <i class="fa-solid ${phase.icon || 'fa-check'}"></i>
+            </div>
+            <div class="roadmap-step-content">
+              <div class="roadmap-step-title-row">
+                <h4 class="roadmap-step-title">
+                  <span>Phase ${phase.phase}:</span> ${escapeHtml(phase.title)}
+                </h4>
+                <span class="roadmap-timeframe-badge">
+                  <i class="fa-regular fa-calendar-check"></i> ${escapeHtml(phase.timeframe)}
+                </span>
+              </div>
+              ${bodyHtml}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+
+  /**
    * Resets the entire analyzer form and state
    */
   function resetAll() {
@@ -743,12 +953,17 @@ Key Requirements:
       const scans = JSON.parse(localStorage.getItem('resumex_scans') || '[]');
       const firstLine = jobDesc.split('\n')[0].replace(/[^a-zA-Z0-9\s-]/g, '').trim();
       const jobTitle = firstLine.substring(0, 32) || 'Target Software Role';
+      const targetRole = (analysis.careerFit && analysis.careerFit.primaryRole)
+        ? analysis.careerFit.primaryRole.title
+        : jobTitle;
 
       const scanEntry = {
         fileName: fileName,
         jobTitle: jobTitle,
+        targetRole: targetRole,
         overallScore: analysis.overallScore,
         verdict: analysis.verdict,
+        careerFit: analysis.careerFit || null,
         date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
         matchedCount: analysis.matchedSkills.length + analysis.matchedKeywords.length,
         missingCount: analysis.missingSkills.length + analysis.missingKeywords.length,

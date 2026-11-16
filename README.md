@@ -115,12 +115,110 @@ You can also test the connection live directly in the browser by clicking the **
 
 ---
 
+## 🎯 Career Advisory & Perfect Job Matching
+
+ResumeX AI does more than calculate ATS scores — it acts as a strategic career advisor by cross-referencing your verified resume skills and target job description to pinpoint:
+
+1. **Primary Highest-Compatibility Role**:
+   - Synthesizes technical overlap, domain keywords, and detected experience years into a precise title (e.g. *Senior Full-Stack Software Engineer*, *AI & Machine Learning Solutions Engineer*, *Cloud Platform & DevOps Engineer*).
+   - Calibrates accurate seniority tiers (*Associate*, *Mid-Level*, *Senior*, *Lead / Principal*).
+   - Displays real-world 2026 market demand trends and salary benchmarks.
+
+2. **Alternative & Adjacent Roles**:
+   - Identifies secondary career tracks (e.g. *Frontend Architect*, *Backend Systems Engineer*) with match percentages and the key **bridge skill** needed to transition.
+
+3. **4-Phase Chronological Transition Roadmap ("How To Land This Job")**:
+   - **Phase 1: Resume & ATS Tweaks (Days 1–3)**: Targeted keyword injection, metric quantification (`[Verb] + [Context] + [Result]`), and standard section heading fixes.
+   - **Phase 2: High-Priority Skill Bridging (Weeks 1–2)**: Concrete learning objectives and estimated hours for your top missing skills.
+   - **Phase 3: Proof-of-Work Portfolio Blueprint (Weeks 3–4)**: Tailored flagship project concepts with recommended tech stack and verifiable deliverables.
+   - **Phase 4: Interview & Application Strategy (Weeks 4+)**: Role-specific system design topics, STAR behavioral story prompts, and strategic LinkedIn outreach.
+
+---
+
+## ⚡ Real Supabase Authentication & Database Setup
+
+ResumeX AI integrates official Supabase Auth (@supabase/supabase-js) with persistent sessions and route guarding:
+
+- **Registration & Login**: Native email/password authentication with validation and clear error mapping.
+- **Route Guarding**: Unauthenticated visits to [dashboard.html](file:///c:/Users/jives/OneDrive/Desktop/ResumeX%20AI/dashboard.html) automatically redirect to `login.html?redirect=dashboard.html&reason=unauthenticated`.
+- **Navigation State Sync**: Header navigation across all pages reflects the authenticated user's name and **Sign Out** button.
+
+### Supabase Database SQL Schema
+Run this script in your **Supabase Dashboard > SQL Editor** to initialize the required tables and Row Level Security (RLS) policies:
+
+```sql
+-- 1. Profiles Table (Linked to auth.users)
+create table if not exists public.profiles (
+  id uuid references auth.users on delete cascade primary key,
+  email text not null,
+  full_name text,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+alter table public.profiles enable row level security;
+create policy "Users can view their own profile" on public.profiles for select using (auth.uid() = id);
+create policy "Users can update their own profile" on public.profiles for update using (auth.uid() = id);
+create policy "Users can insert their own profile" on public.profiles for insert with check (auth.uid() = id);
+
+-- 2. Scans Table (Analysis History)
+create table if not exists public.scans (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references auth.users on delete cascade not null,
+  file_name text not null,
+  job_title text not null,
+  overall_score integer not null,
+  verdict text not null,
+  scores jsonb,
+  matched_skills text[],
+  missing_skills text[],
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+alter table public.scans enable row level security;
+create policy "Users can view their own scans" on public.scans for select using (auth.uid() = user_id);
+create policy "Users can insert their own scans" on public.scans for insert with check (auth.uid() = user_id);
+create policy "Users can delete their own scans" on public.scans for delete using (auth.uid() = user_id);
+```
+
+---
+
 ## 🔒 Client-Side Privacy Guarantee
 
 - All document parsing (PDF extraction via **PDF.js** and Word extraction via **Mammoth.js**) executes **100% locally in the browser**.
 - No resume documents, contact details, or job descriptions are transmitted to external servers or third-party APIs during this frontend stage.
 - Configured with official PDF.js web worker (`pdf.worker.min.js`) for non-blocking asynchronous PDF processing.
 - Image-only or scanned PDFs are automatically detected with an **OCR Required** diagnostic warning.
+
+---
+
+## 📦 How to Upload / Push to GitHub
+
+To publish this project to your GitHub account:
+
+### Step 1: Create a New Repository on GitHub
+1. Open [https://github.com/new](https://github.com/new) in your browser.
+2. Enter Repository name: `resumex-ai` (or your preferred name).
+3. Set visibility to **Public** or **Private**.
+4. Leave **"Initialize this repository with a README"** **UNCHECKED** (we already have a complete README and git history).
+5. Click **Create repository**.
+
+### Step 2: Link Remote & Push from Terminal
+In your terminal, run:
+
+```bash
+# 1. Add your GitHub repository as remote origin (replace YOUR-USERNAME with your GitHub username)
+git remote add origin https://github.com/YOUR-USERNAME/resumex-ai.git
+
+# 2. Stage all latest files
+git add .
+
+# 3. Commit the updates
+git commit -m "feat: Add Career Advisory, Perfect Job Match & 4-Phase Roadmap"
+
+# 4. Set default branch to main and push
+git branch -M main
+git push -u origin main
+```
 
 ---
 
@@ -133,20 +231,3 @@ You can also test the connection live directly in the browser by clicking the **
 2. **Generative AI Coaching (Gemini API)**:
    - *Current State*: Suggestions are dynamically compiled from missing keywords, missing skills, missing sections, and metric density.
    - *Next Phase*: Connect Google Gemini 1.5 Flash/Pro to provide natural-language bullet point rewriting and STAR-method accomplishments phrasing.
-
-3. **Cloud Database & User Persistence (Supabase)**:
-   - *Current State*: Native Supabase Auth with email/password registration, login, persistent sessions, route guards, and profile creation is implemented and fully tested.
-   - *Next Phase*: Add Google/GitHub OAuth providers and cloud resume document bucket storage.
-
----
-
-## 🐙 Connecting to GitHub
-
-1. Create a new empty repository on [GitHub](https://github.com/new) named `resumex-ai` (leave **Add a README file**, **.gitignore**, and **license** unchecked).
-2. Connect your local repository to GitHub:
-   ```bash
-   git remote add origin https://github.com/<your-username>/resumex-ai.git
-   git branch -M main
-   git push -u origin main
-   ```
-3. Your local commits will sync to your remote repository on GitHub.
