@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In & Register – ResumeX AI</title>
+  <meta name="description" content="Sign in or create your ResumeX AI account with real Supabase authentication to access your resume analysis history and personalized career advice.">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Site Navigation -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="ResumeX AI Home">
+        <img src="assets/logo.svg" alt="ResumeX AI Logo" width="36" height="36">
+        <span>ResumeX <span class="brand-badge">AI</span></span>
+      </a>
+
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="index.html#features" class="nav-link">Features</a></li>
+          <li><a href="index.html#how-it-works" class="nav-link">How It Works</a></li>
+          <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+          <li><a href="analyzer.html" class="nav-link">Analyzer</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="analyzer.html" class="btn btn-primary btn-sm">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Get Started
+        </a>
+        <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Auth Page Content -->
+  <main class="auth-page">
+    <div class="auth-card">
+      <div class="auth-header">
+        <a href="index.html" class="brand-logo">
+          <img src="assets/logo.svg" alt="ResumeX AI Logo" width="40" height="40">
+          <span>ResumeX <span class="brand-badge">AI</span></span>
+        </a>
+        <h2 id="auth-title">Welcome Back</h2>
+        <p id="auth-subtitle">Sign in to manage your resume scans and career roadmap</p>
+      </div>
+
+      <!-- Supabase Connection Status Pill -->
+      <div id="supabase-status-banner" style="margin-bottom: 20px; padding: 10px 14px; border-radius: 8px; font-size: 0.8rem; display: flex; align-items: center; justify-content: space-between; background: #fffbeb; border: 1px solid #fde68a; color: #92400e;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-database" id="supabase-status-icon" style="color: #f59e0b;"></i>
+          <span id="supabase-status-text">Supabase: Credentials Pending</span>
+        </div>
+        <button type="button" id="btn-check-supabase" class="btn btn-secondary btn-sm" style="padding: 2px 8px; font-size: 0.72rem;">
+          Test
+        </button>
+      </div>
+
+      <!-- Protected Route Notification (shown if redirected here) -->
+      <div id="auth-redirect-notice" style="display: none; margin-bottom: 18px; padding: 10px 14px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; font-size: 0.82rem; color: #1e40af; align-items: center; gap: 8px;">
+        <i class="fa-solid fa-lock"></i>
+        <span>Please sign in with your Supabase account to access the Applicant Dashboard.</span>
+      </div>
+
+      <!-- Inline Error Alert Container -->
+      <div id="auth-error-alert" style="display: none; margin-bottom: 18px; padding: 12px 14px; background: #fef2f2; border: 1px solid #fecaca; border-left: 4px solid #ef4444; border-radius: 8px; font-size: 0.85rem; color: #991b1b;">
+        <div style="display: flex; align-items: flex-start; gap: 8px;">
+          <i class="fa-solid fa-circle-exclamation" style="margin-top: 2px;"></i>
+          <span id="auth-error-text">Authentication error</span>
+        </div>
+      </div>
+
+      <!-- Inline Success Alert Container -->
+      <div id="auth-success-alert" style="display: none; margin-bottom: 18px; padding: 12px 14px; background: #ecfdf5; border: 1px solid #a7f3d0; border-left: 4px solid #10b981; border-radius: 8px; font-size: 0.85rem; color: #065f46;">
+        <div style="display: flex; align-items: flex-start; gap: 8px;">
+          <i class="fa-solid fa-circle-check" style="margin-top: 2px;"></i>
+          <span id="auth-success-text">Success</span>
+        </div>
+      </div>
+
+      <!-- Auth Tab Toggle (Sign In / Sign Up) -->
+      <div class="auth-tabs" role="tablist">
+        <button type="button" class="auth-tab active" id="tab-signin" role="tab" aria-selected="true">Sign In</button>
+        <button type="button" class="auth-tab" id="tab-signup" role="tab" aria-selected="false">Create Account</button>
+      </div>
+
+      <!-- Authentication Form -->
+      <form id="auth-form" novalidate>
+        <!-- Full Name field (shown on Sign Up tab only) -->
+        <div class="form-group" id="group-name" style="display: none;">
+          <label class="form-label" for="user-name">Full Name</label>
+          <div class="form-input-wrap">
+            <i class="fa-solid fa-user input-icon"></i>
+            <input type="text" class="form-input" id="user-name" placeholder="Alex Morgan" autocomplete="name">
+          </div>
+        </div>
+
+        <!-- Email field -->
+        <div class="form-group">
+          <label class="form-label" for="user-email">Email Address</label>
+          <div class="form-input-wrap">
+            <i class="fa-solid fa-envelope input-icon"></i>
+            <input type="email" class="form-input" id="user-email" placeholder="alex@example.com" required autocomplete="email">
+          </div>
+        </div>
+
+        <!-- Password field with Visibility Toggle -->
+        <div class="form-group">
+          <label class="form-label" for="user-password">Password</label>
+          <div class="form-input-wrap">
+            <i class="fa-solid fa-lock input-icon"></i>
+            <input type="password" class="form-input has-toggle" id="user-password" placeholder="At least 6 characters" required autocomplete="current-password">
+            <button type="button" class="btn-password-toggle" id="toggle-password" aria-label="Toggle password visibility">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Confirm Password field (shown on Sign Up tab only) -->
+        <div class="form-group" id="group-confirm-password" style="display: none;">
+          <label class="form-label" for="user-confirm-password">Confirm Password</label>
+          <div class="form-input-wrap">
+            <i class="fa-solid fa-shield-halved input-icon"></i>
+            <input type="password" class="form-input has-toggle" id="user-confirm-password" placeholder="Repeat your password" autocomplete="new-password">
+            <button type="button" class="btn-password-toggle" id="toggle-confirm-password" aria-label="Toggle confirm password visibility">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Remember Me & Forgot Password -->
+        <div class="auth-extras" id="auth-extras">
+          <label class="remember-wrap">
+            <input type="checkbox" id="remember-me" checked>
+            <span>Remember session</span>
+          </label>
+          <a href="#" class="forgot-link" id="link-forgot-pass">Forgot password?</a>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 13px; font-size: 1rem;" id="btn-submit-auth">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In to ResumeX
+        </button>
+      </form>
+
+      <!-- Social & Demo Logins -->
+      <div class="auth-divider">
+        <span>Or connect with</span>
+      </div>
+
+      <div class="social-btns">
+        <button type="button" class="btn-social" id="btn-social-google">
+          <i class="fa-brands fa-google" style="color:#ea4335;"></i> Google
+        </button>
+        <button type="button" class="btn-social" id="btn-social-github">
+          <i class="fa-brands fa-github"></i> GitHub
+        </button>
+      </div>
+
+      <!-- Demo Guest Access (Offline Mode) -->
+      <div style="margin-top: 18px; text-align: center;">
+        <button type="button" class="btn btn-ghost btn-sm" id="btn-guest-login" style="font-size: 0.82rem; color: var(--primary);">
+          <i class="fa-solid fa-user-astronaut"></i> Continue in Client-Only Demo Mode
+        </button>
+      </div>
+
+      <!-- Supabase Credentials Guidance Note -->
+      <div style="margin-top: 22px; padding: 10px 14px; background: #f8fafc; border-radius: 8px; border: 1px solid var(--border-subtle); text-align: center;">
+        <p style="font-size: 0.76rem; color: var(--text-muted); line-height: 1.4;">
+          <strong>Supabase Cloud Auth:</strong> Live registration, sessions, and database persistence require setting your Project URL and public anon key in <code>supabase-config.js</code>.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="border:none; padding-top:0;">
+        <div>
+          &copy; <span id="current-year">2026</span> ResumeX AI – AI Resume Analyzer & Career Advisor.
+        </div>
+        <div style="display:flex; gap:16px;">
+          <a href="index.html">Home</a>
+          <a href="analyzer.html">Analyzer</a>
+          <a href="dashboard.html">Dashboard</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Official Supabase JS Client & Config -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+
+  <!-- Custom Core Scripts -->
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+
+  <!-- Auth Page Logic -->
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const tabSignIn = document.getElementById('tab-signin');
+      const tabSignUp = document.getElementById('tab-signup');
+      const groupName = document.getElementById('group-name');
+      const groupConfirmPass = document.getElementById('group-confirm-password');
+      const authTitle = document.getElementById('auth-title');
+      const authSubtitle = document.getElementById('auth-subtitle');
+      const btnSubmit = document.getElementById('btn-submit-auth');
+      const authExtras = document.getElementById('auth-extras');
+      const authForm = document.getElementById('auth-form');
+      const emailInput = document.getElementById('user-email');
+      const passInput = document.getElementById('user-password');
+      const confirmPassInput = document.getElementById('user-confirm-password');
+      const nameInput = document.getElementById('user-name');
+      const btnGuest = document.getElementById('btn-guest-login');
+      const btnGoogle = document.getElementById('btn-social-google');
+      const btnGithub = document.getElementById('btn-social-github');
+      const linkForgot = document.getElementById('link-forgot-pass');
+      const statusBanner = document.getElementById('supabase-status-banner');
+      const statusText = document.getElementById('supabase-status-text');
+      const statusIcon = document.getElementById('supabase-status-icon');
+      const btnCheckSupabase = document.getElementById('btn-check-supabase');
+      const redirectNotice = document.getElementById('auth-redirect-notice');
+      const errorAlert = document.getElementById('auth-error-alert');
+      const errorText = document.getElementById('auth-error-text');
+      const successAlert = document.getElementById('auth-success-alert');
+      const successText = document.getElementById('auth-success-text');
+
+      // Password visibility toggles
+      const togglePass = document.getElementById('toggle-password');
+      const toggleConfirmPass = document.getElementById('toggle-confirm-password');
+      if (window.AuthManager) {
+        window.AuthManager.setupPasswordToggle(passInput, togglePass);
+        window.AuthManager.setupPasswordToggle(confirmPassInput, toggleConfirmPass);
+      }
+
+      let mode = 'signin';
+
+      // 1. Inspect URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirectParam = urlParams.get('redirect');
+      const reasonParam = urlParams.get('reason');
+
+      if (reasonParam === 'unauthenticated' && redirectNotice) {
+        redirectNotice.style.display = 'flex';
+      }
+
+      if (urlParams.get('tab') === 'signup') {
+        setMode('signup');
+      }
+
+      // If already logged in, redirect to dashboard
+      if (window.AuthManager) {
+        await window.AuthManager.redirectIfAuthenticated(redirectParam ? decodeURIComponent(redirectParam) : 'dashboard.html');
+      }
+
+      // 2. Inspect Supabase Status Banner
+      function updateSupabaseBanner() {
+        const isConfigured = window.SupabaseConfig && window.SupabaseConfig.isSupabaseConfigured();
+        if (isConfigured) {
+          statusBanner.style.background = '#ecfdf5';
+          statusBanner.style.borderColor = '#a7f3d0';
+          statusBanner.style.color = '#065f46';
+          statusIcon.className = 'fa-solid fa-circle-check';
+          statusIcon.style.color = '#10b981';
+          statusText.textContent = 'Supabase Cloud: Ready & Connected';
+        } else {
+          statusBanner.style.background = '#fffbeb';
+          statusBanner.style.borderColor = '#fde68a';
+          statusBanner.style.color = '#92400e';
+          statusIcon.className = 'fa-solid fa-triangle-exclamation';
+          statusIcon.style.color = '#f59e0b';
+          statusText.textContent = 'Supabase: Enter credentials in supabase-config.js';
+        }
+      }
+
+      updateSupabaseBanner();
+
+      if (btnCheckSupabase) {
+        btnCheckSupabase.addEventListener('click', async () => {
+          if (!window.SupabaseConfig) return;
+          window.showToast('Checking Supabase connection...', 'info');
+          const result = await window.SupabaseConfig.testSupabaseConnection();
+          if (result.success) {
+            window.showToast('Connected to Supabase project!', 'success');
+          } else {
+            window.showToast(result.message, 'error');
+          }
+          updateSupabaseBanner();
+        });
+      }
+
+      // 3. Tab Switching
+      tabSignIn.addEventListener('click', () => setMode('signin'));
+      tabSignUp.addEventListener('click', () => setMode('signup'));
+
+      function setMode(newMode) {
+        mode = newMode;
+        clearAlerts();
+
+        if (mode === 'signin') {
+          tabSignIn.classList.add('active');
+          tabSignUp.classList.remove('active');
+          groupName.style.display = 'none';
+          groupConfirmPass.style.display = 'none';
+          authExtras.style.display = 'flex';
+          authTitle.textContent = 'Welcome Back';
+          authSubtitle.textContent = 'Sign in to manage your resume scans and career roadmap';
+          btnSubmit.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In to ResumeX';
+        } else {
+          tabSignUp.classList.add('active');
+          tabSignIn.classList.remove('active');
+          groupName.style.display = 'block';
+          groupConfirmPass.style.display = 'block';
+          authExtras.style.display = 'none';
+          authTitle.textContent = 'Create Supabase Account';
+          authSubtitle.textContent = 'Register to store your resume scans and track ATS progression';
+          btnSubmit.innerHTML = '<i class="fa-solid fa-user-plus"></i> Create Account';
+        }
+      }
+
+      function showError(msg) {
+        errorText.textContent = msg;
+        errorAlert.style.display = 'block';
+        successAlert.style.display = 'none';
+        if (window.showToast) window.showToast(msg, 'error');
+      }
+
+      function showSuccess(msg) {
+        successText.textContent = msg;
+        successAlert.style.display = 'block';
+        errorAlert.style.display = 'none';
+        if (window.showToast) window.showToast(msg, 'success');
+      }
+
+      function clearAlerts() {
+        errorAlert.style.display = 'none';
+        successAlert.style.display = 'none';
+      }
+
+      // 4. Form Submission: Real Supabase Authentication
+      authForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearAlerts();
+
+        const email = emailInput.value.trim();
+        const pass = passInput.value;
+        const confirmPass = confirmPassInput ? confirmPassInput.value : '';
+        const name = nameInput.value.trim();
+
+        // Form Validation
+        if (!validateEmail(email)) {
+          showError('Please enter a valid email address (e.g. name@example.com).');
+          emailInput.focus();
+          return;
+        }
+
+        if (pass.length < 6) {
+          showError('Password must contain at least 6 characters.');
+          passInput.focus();
+          return;
+        }
+
+        if (mode === 'signup') {
+          if (name.length < 2) {
+            showError('Please enter your full name (at least 2 characters).');
+            nameInput.focus();
+            return;
+          }
+
+          if (pass !== confirmPass) {
+            showError('Passwords do not match. Please ensure both fields are identical.');
+            confirmPassInput.focus();
+            return;
+          }
+        }
+
+        // Check if Supabase credentials are configured
+        const isConfigured = window.SupabaseConfig && window.SupabaseConfig.isSupabaseConfigured();
+        if (!isConfigured) {
+          showError(
+            'Supabase credentials pending! Open "supabase-config.js" and enter your Project URL and anon key to enable live registration and login.'
+          );
+          return;
+        }
+
+        // Disable button with spinner
+        btnSubmit.disabled = true;
+        btnSubmit.innerHTML = mode === 'signin'
+          ? '<i class="fa-solid fa-spinner fa-spin"></i> Signing In...'
+          : '<i class="fa-solid fa-spinner fa-spin"></i> Creating Account...';
+
+        try {
+          if (mode === 'signin') {
+            const res = await window.AuthManager.signIn(email, pass);
+            if (!res.success) {
+              showError(res.error);
+              btnSubmit.disabled = false;
+              btnSubmit.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In to ResumeX';
+              return;
+            }
+
+            showSuccess('Signed in successfully! Redirecting to Dashboard...');
+            const target = redirectParam ? decodeURIComponent(redirectParam) : 'dashboard.html';
+            setTimeout(() => {
+              window.location.href = target;
+            }, 600);
+          } else {
+            // Register / Sign Up
+            const res = await window.AuthManager.signUp(email, pass, name);
+            if (!res.success) {
+              showError(res.error);
+              btnSubmit.disabled = false;
+              btnSubmit.innerHTML = '<i class="fa-solid fa-user-plus"></i> Create Account';
+              return;
+            }
+
+            if (res.confirmationRequired) {
+              showSuccess('Registration complete! Please check your email to confirm your account before logging in.');
+              btnSubmit.disabled = false;
+              btnSubmit.innerHTML = '<i class="fa-solid fa-check"></i> Check Your Email';
+            } else {
+              showSuccess('Account created and profile initialized! Redirecting to Dashboard...');
+              const target = redirectParam ? decodeURIComponent(redirectParam) : 'dashboard.html';
+              setTimeout(() => {
+                window.location.href = target;
+              }, 600);
+            }
+          }
+        } catch (err) {
+          showError(err.message || 'An unexpected authentication error occurred.');
+          btnSubmit.disabled = false;
+          btnSubmit.innerHTML = mode === 'signin' ? 'Sign In to ResumeX' : 'Create Account';
+        }
+      });
+
+      // 5. Offline Demo Mode (clearly labeled fallback for client evaluation)
+      btnGuest.addEventListener('click', () => {
+        const demoUser = {
+          id: 'demo-user-' + Date.now(),
+          email: 'demo.applicant@resumex.local',
+          user_metadata: { full_name: 'Demo Candidate' },
+          isDemo: true,
+          created_at: new Date().toISOString()
+        };
+        localStorage.setItem('resumex_demo_user', JSON.stringify(demoUser));
+        window.showToast('Entering client-side demo mode...', 'info');
+        const target = redirectParam ? decodeURIComponent(redirectParam) : 'dashboard.html';
+        setTimeout(() => {
+          window.location.href = target;
+        }, 400);
+      });
+
+      // 6. Social OAuth
+      [btnGoogle, btnGithub].forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const isConfigured = window.SupabaseConfig && window.SupabaseConfig.isSupabaseConfigured();
+          const provider = btn.id.includes('google') ? 'google' : 'github';
+
+          if (!isConfigured) {
+            showError(`Supabase ${provider.toUpperCase()} OAuth requires configuring supabase-config.js with your project credentials.`);
+            return;
+          }
+
+          const client = window.SupabaseConfig.getClient();
+          if (client) {
+            const { error } = await client.auth.signInWithOAuth({
+              provider: provider,
+              options: {
+                redirectTo: window.location.origin + '/dashboard.html'
+              }
+            });
+            if (error) {
+              showError(`OAuth Error: ${error.message}`);
+            }
+          }
+        });
+      });
+
+      // 7. Forgot Password
+      linkForgot.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const email = emailInput.value.trim();
+        const isConfigured = window.SupabaseConfig && window.SupabaseConfig.isSupabaseConfigured();
+
+        if (!isConfigured) {
+          showError('Password reset requires active Supabase credentials in supabase-config.js.');
+          return;
+        }
+
+        if (!validateEmail(email)) {
+          showError('Please enter your email address to receive password reset link.');
+          emailInput.focus();
+          return;
+        }
+
+        const client = window.SupabaseConfig.getClient();
+        if (client) {
+          const { error } = await client.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + '/login.html'
+          });
+          if (error) {
+            showError(`Reset error: ${error.message}`);
+          } else {
+            showSuccess('Password reset link sent! Please check your email inbox.');
+          }
+        }
+      });
+
+      function validateEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      }
+    });
+  </script>
+</body>
+</html>

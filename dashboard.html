@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Applicant Dashboard – ResumeX AI</title>
+  <meta name="description" content="View your real resume analysis history, ATS score progression, and career skill gap tracking.">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Site Navigation -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="ResumeX AI Home">
+        <img src="assets/logo.svg" alt="ResumeX AI Logo" width="36" height="36">
+        <span>ResumeX <span class="brand-badge">AI</span></span>
+      </a>
+
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="index.html#features" class="nav-link">Features</a></li>
+          <li><a href="index.html#how-it-works" class="nav-link">How It Works</a></li>
+          <li><a href="dashboard.html" class="nav-link active">Dashboard</a></li>
+          <li><a href="analyzer.html" class="nav-link">Analyzer</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-secondary btn-sm" id="nav-auth-btn">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In
+        </a>
+        <a href="analyzer.html" class="btn btn-primary btn-sm">
+          <i class="fa-solid fa-plus"></i> New Scan
+        </a>
+        <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Dashboard Content -->
+  <main class="container dashboard-container">
+    <div class="dashboard-header">
+      <div>
+        <span class="pill-badge" style="margin-bottom: 8px;">
+          <i class="fa-solid fa-chart-line"></i> Analytics & Application History
+        </span>
+        <h1>Applicant Command Center</h1>
+      </div>
+      <div>
+        <a href="analyzer.html" class="btn btn-primary">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Run New Scan
+        </a>
+      </div>
+    </div>
+
+    <!-- Authenticated User Profile Banner -->
+    <div class="user-profile-bar" id="user-profile-bar" style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 18px 24px; margin-bottom: 24px; box-shadow: var(--shadow-sm); flex-wrap: wrap; gap: 14px;">
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <div style="width: 48px; height: 48px; border-radius: var(--radius-pill); background: var(--gradient-soft); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+          <i class="fa-solid fa-user-astronaut"></i>
+        </div>
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <h3 id="dash-user-name" style="font-size: 1.15rem; font-weight: 700; color: var(--text-main);">Loading Account...</h3>
+            <span class="pill-badge" id="dash-auth-badge" style="font-size: 0.72rem; padding: 2px 8px;">Supabase Verified</span>
+          </div>
+          <p id="dash-user-email" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">user@example.com</p>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <button type="button" class="btn btn-secondary btn-sm" id="btn-dash-logout">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
+        </button>
+      </div>
+    </div>
+
+    <!-- Frontend Mode & Supabase Status Banner -->
+    <div class="preview-notice" style="margin-bottom: 28px; flex-wrap: wrap; gap: 12px;">
+      <div>
+        <p style="margin-bottom: 4px;">
+          <i class="fa-solid fa-database"></i> 
+          <strong>Applicant Storage & Analytics:</strong> Metrics below reflect real scans executed in your local browser session.
+        </p>
+        <span id="dashboard-supabase-status" style="font-size: 0.8rem; color: var(--text-muted); display: inline-flex; align-items: center; gap: 6px;">
+          <i class="fa-solid fa-circle" id="supabase-indicator-dot" style="font-size: 0.6rem; color: #f59e0b;"></i>
+          <span id="supabase-indicator-text">Supabase Cloud: Ready (Credentials pending in supabase-config.js)</span>
+        </span>
+      </div>
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <button type="button" class="btn btn-secondary btn-sm" id="btn-test-supabase-dash" style="font-size: 0.75rem; padding: 5px 12px;">
+          <i class="fa-solid fa-plug"></i> Test Supabase
+        </button>
+        <span class="pill-badge" style="background:#fff; font-size:0.75rem;">Local + Cloud Ready</span>
+      </div>
+    </div>
+
+    <!-- EMPTY STATE (Shown if no scans exist in localStorage yet) -->
+    <div class="history-card empty-state" id="dashboard-empty-state" style="display: none;">
+      <div class="empty-state-icon">
+        <i class="fa-solid fa-folder-open"></i>
+      </div>
+      <h4>No Resume Scans Recorded Yet</h4>
+      <p>
+        You haven't analyzed any resumes in this browser session. Head over to the Analyzer, upload a resume and paste a job description to populate your real metrics and ATS scoring history here!
+      </p>
+      <a href="analyzer.html" class="btn btn-primary btn-lg">
+        <i class="fa-solid fa-play"></i> Launch Analyzer & Scan First Resume
+      </a>
+    </div>
+
+    <!-- POPULATED STATE (Shown when scans exist) -->
+    <div id="dashboard-populated-state">
+      <!-- 4 Overview Metric Cards -->
+      <div class="stats-overview-grid">
+        <div class="stat-metric-card">
+          <div class="stat-icon"><i class="fa-solid fa-file-circle-check"></i></div>
+          <div class="stat-meta">
+            <span>Total Scans Run</span>
+            <strong id="metric-total-scans">0</strong>
+          </div>
+        </div>
+
+        <div class="stat-metric-card">
+          <div class="stat-icon" style="color:var(--success); background:var(--success-bg);"><i class="fa-solid fa-trophy"></i></div>
+          <div class="stat-meta">
+            <span>Highest ATS Score</span>
+            <strong id="metric-highest-score">0%</strong>
+          </div>
+        </div>
+
+        <div class="stat-metric-card">
+          <div class="stat-icon" style="color:#0284c7; background:#e0f2fe;"><i class="fa-solid fa-chart-simple"></i></div>
+          <div class="stat-meta">
+            <span>Average Match Rate</span>
+            <strong id="metric-avg-score">0%</strong>
+          </div>
+        </div>
+
+        <div class="stat-metric-card">
+          <div class="stat-icon" style="color:#7c3aed; background:var(--secondary-light);"><i class="fa-solid fa-tags"></i></div>
+          <div class="stat-meta">
+            <span>Matched Keywords</span>
+            <strong id="metric-total-matched">0</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Section: Trend Chart & Doughnut Tier Distribution -->
+      <div class="charts-row">
+        <!-- Trend Chart -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <h3><i class="fa-solid fa-arrow-trend-up" style="color:var(--primary); margin-right:8px;"></i> ATS Score Progression Over Time</h3>
+            <span style="font-size:0.8rem; color:var(--text-muted);">Real scans logged in browser</span>
+          </div>
+          <div class="chart-canvas-wrap">
+            <canvas id="historyChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Doughnut Distribution -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <h3><i class="fa-solid fa-chart-pie" style="color:var(--primary); margin-right:8px;"></i> Match Tier Breakdown</h3>
+          </div>
+          <div class="chart-canvas-wrap">
+            <canvas id="doughnutChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Scans History Table -->
+      <div class="history-card" style="margin-bottom: 32px;">
+        <div class="card-title-row" style="margin-bottom: 20px;">
+          <h3><i class="fa-solid fa-clock-rotate-left" style="color:var(--primary);"></i> Scan History & Diagnostic Records</h3>
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-clear-history" title="Clear local scans">
+            <i class="fa-solid fa-trash-can"></i> Clear History
+          </button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Document Name</th>
+                <th>Target Role</th>
+                <th>ATS Match</th>
+                <th>Tier</th>
+                <th>Keywords Split</th>
+                <th>Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="scans-table-body">
+              <!-- Populated dynamically by dashboard.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Career Trajectory Guidance -->
+    <div class="feedback-card">
+      <div class="card-title-row">
+        <h3><i class="fa-solid fa-compass" style="color:var(--primary);"></i> Career Trajectory & Interview Readiness Advisory</h3>
+        <span class="pill-badge">Strategy</span>
+      </div>
+      <p style="font-size:0.92rem; color:var(--text-muted); margin-bottom:16px;">
+        Based on industry hiring standards, here is how to translate your ATS optimization into interview performance:
+      </p>
+
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:18px;">
+        <div style="background:#f8fafc; border-radius:12px; padding:18px; border:1px solid var(--border-subtle);">
+          <div style="font-weight:700; color:var(--text-main); margin-bottom:6px; display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-diagram-project" style="color:var(--primary);"></i> Portfolio System Architecture
+          </div>
+          <p style="font-size:0.85rem; color:var(--text-muted);">
+            Ensure your GitHub repositories contain architecture diagrams and READMEs highlighting the keywords matched in your resume.
+          </p>
+        </div>
+
+        <div style="background:#f8fafc; border-radius:12px; padding:18px; border:1px solid var(--border-subtle);">
+          <div style="font-weight:700; color:var(--text-main); margin-bottom:6px; display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-comments" style="color:var(--primary);"></i> Behavioral Story Alignment
+          </div>
+          <p style="font-size:0.85rem; color:var(--text-muted);">
+            Prepare STAR-method interview responses for each quantified impact metric listed on your resume.
+          </p>
+        </div>
+
+        <div style="background:#f8fafc; border-radius:12px; padding:18px; border:1px solid var(--border-subtle);">
+          <div style="font-weight:700; color:var(--text-main); margin-bottom:6px; display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-graduation-cap" style="color:var(--primary);"></i> Missing Skill Bridging
+          </div>
+          <p style="font-size:0.85rem; color:var(--text-muted);">
+            If a missing keyword appears across multiple scans, spend 2-3 hours completing a verifiable micro-project in that technology.
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="border:none; padding-top:0;">
+        <div>
+          &copy; <span id="current-year">2026</span> ResumeX AI – AI Resume Analyzer & Career Advisor.
+        </div>
+        <div style="display:flex; gap:16px;">
+          <a href="index.html">Home</a>
+          <a href="analyzer.html">Analyzer</a>
+          <a href="login.html">Sign In</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CDN Libraries: Chart.js & Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+
+  <!-- Custom Scripts -->
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

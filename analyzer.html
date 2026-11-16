@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Analyzer & ATS Checker – ResumeX AI</title>
+  <meta name="description" content="Upload your PDF or DOCX resume and paste a job description to get instant, deterministic ATS scores, matched and missing keywords, skills, and actionable recommendations.">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Site Navigation -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="ResumeX AI Home">
+        <img src="assets/logo.svg" alt="ResumeX AI Logo" width="36" height="36">
+        <span>ResumeX <span class="brand-badge">AI</span></span>
+      </a>
+
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-menu">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="index.html#features" class="nav-link">Features</a></li>
+          <li><a href="index.html#how-it-works" class="nav-link">How It Works</a></li>
+          <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+          <li><a href="analyzer.html" class="nav-link active">Analyzer</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-secondary btn-sm" id="nav-auth-btn">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In
+        </a>
+        <a href="dashboard.html" class="btn btn-primary btn-sm">
+          <i class="fa-solid fa-chart-line"></i> Dashboard
+        </a>
+        <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Analyzer Content -->
+  <main class="container analyzer-container">
+    <!-- Header -->
+    <div class="analyzer-header">
+      <span class="pill-badge" style="margin-bottom: 12px;">
+        <i class="fa-solid fa-magnifying-glass-chart"></i> Precision Diagnostic Engine
+      </span>
+      <h1>Deterministic ATS Resume Analyzer</h1>
+      <p>
+        Extract text from your PDF or Word document locally and cross-reference competencies with your target job description using our 100-point ATS scoring engine.
+      </p>
+    </div>
+
+    <!-- Scanned PDF / OCR Warning Banner (Hidden by default, shown if image PDF detected) -->
+    <div class="ocr-alert-banner" id="ocr-alert-banner" role="alert">
+      <i class="fa-solid fa-triangle-exclamation ocr-alert-icon"></i>
+      <div class="ocr-alert-content">
+        <h4>OCR Required: Scanned or Image-Based Document Detected</h4>
+        <p id="ocr-alert-message">
+          The uploaded PDF appears to be a scanned image or photo without an embedded text layer. Modern Applicant Tracking Systems require machine-readable text to parse candidate qualifications. Please upload a digital PDF, DOCX file, or run Optical Character Recognition (OCR) first.
+        </p>
+      </div>
+    </div>
+
+    <!-- Input Section: Two Columns -->
+    <div class="analyzer-layout">
+      <!-- Left Column: Resume Upload -->
+      <div class="input-card">
+        <div class="card-title-row">
+          <h3><i class="fa-solid fa-file-arrow-up" style="color:var(--primary);"></i> 1. Upload Your Resume</h3>
+          <button type="button" class="btn-sample-job" id="btn-sample-resume" title="Load sample Full-Stack Engineer resume">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Load Sample Resume
+          </button>
+        </div>
+
+        <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Upload resume file dropzone">
+          <input type="file" id="resume-file-input" accept=".pdf,.docx,.txt" style="display: none;">
+          <div class="dropzone-icon">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+          </div>
+          <div class="dropzone-text">
+            <h4>Drag & drop your resume here</h4>
+            <p>Supports PDF, DOCX, or TXT (Max 10MB)</p>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" style="pointer-events: none;">
+            Browse Document
+          </button>
+        </div>
+
+        <!-- File preview chip (shown when file is selected) -->
+        <div class="file-preview-chip" id="file-preview-chip">
+          <div class="file-preview-info">
+            <i class="fa-solid fa-file-pdf" id="file-icon-type"></i>
+            <div>
+              <div class="file-preview-name" id="file-name">Resume.pdf</div>
+              <div class="file-preview-size" id="file-size">140 KB</div>
+            </div>
+          </div>
+          <button type="button" class="btn-remove-file" id="btn-remove-file" title="Remove file" aria-label="Remove uploaded file">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Column: Job Description Input -->
+      <div class="input-card">
+        <div class="card-title-row">
+          <h3><i class="fa-solid fa-bullseye" style="color:var(--primary);"></i> 2. Target Job Description</h3>
+          <button type="button" class="btn-sample-job" id="btn-sample-job" title="Load sample Senior Full-Stack role">
+            <i class="fa-solid fa-clipboard-check"></i> Load Sample Job
+          </button>
+        </div>
+
+        <textarea 
+          class="job-desc-textarea" 
+          id="job-desc-input" 
+          placeholder="Paste the target job posting or requirements here to enable keyword, skill-gap, and experience matching... (e.g. Senior Software Engineer responsibilities and technical qualifications)"
+          aria-label="Target job description textarea"
+        ></textarea>
+
+        <div class="textarea-footer">
+          <span id="char-count">0 characters</span>
+          <span>Minimum 30 characters required</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions & Validation -->
+    <div class="analyzer-actions">
+      <button type="button" class="btn btn-primary btn-lg" id="btn-analyze" style="min-width: 240px;">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> Analyze Resume
+      </button>
+      <button type="button" class="btn btn-secondary btn-lg" id="btn-reset-top" style="margin-left: 10px; display: none;">
+        <i class="fa-solid fa-arrow-rotate-left"></i> Reset
+      </button>
+      <div class="validation-msg" id="validation-msg" role="alert"></div>
+    </div>
+
+    <!-- Multi-stage Loader -->
+    <div class="analysis-loader" id="analysis-loader" role="status" aria-live="polite">
+      <div class="loader-spinner"></div>
+      <h3 class="loader-stage-title" id="loader-stage-title">Parsing document structure...</h3>
+      <p class="loader-stage-desc" id="loader-stage-desc">Extracting text streams and headers...</p>
+      <div class="progress-track">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+      <span style="font-size: 0.8rem; color: var(--text-muted);">Running secure client-side analysis (Zero external transmission)</span>
+    </div>
+
+    <!-- Results Section -->
+    <div class="results-section" id="results-section">
+      <!-- Notice Banner -->
+      <div class="results-banner">
+        <div class="results-banner-left">
+          <i class="fa-solid fa-circle-check" style="font-size: 1.2rem;"></i>
+          <span>100-Point ATS Analysis Complete: Evaluated via deterministic scoring engine.</span>
+        </div>
+        <div>
+          <span class="pill-badge" id="results-doc-badge" style="background:#fff; border-color:#a7f3d0; font-size:0.75rem;">Document Verified</span>
+        </div>
+      </div>
+
+      <!-- Top Row: Score Circle Card & 7-Criteria Score Breakdown -->
+      <div class="results-grid-top">
+        <!-- Main Circular Score Card -->
+        <div class="score-main-card">
+          <span style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em;">
+            Overall ATS Score
+          </span>
+
+          <div class="score-circle">
+            <svg viewBox="0 0 160 160">
+              <defs>
+                <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#4f46e5" />
+                  <stop offset="100%" stop-color="#10b981" />
+                </linearGradient>
+              </defs>
+              <circle class="circle-bg" cx="80" cy="80" r="70"></circle>
+              <circle class="circle-fill" id="score-circle-fill" cx="80" cy="80" r="70"></circle>
+            </svg>
+            <div class="score-number">
+              <span id="score-value">0</span><span>/100</span>
+            </div>
+          </div>
+
+          <div class="score-verdict" id="score-verdict">Calculating...</div>
+          <p class="score-explanation" id="score-explanation">
+            Evaluated against 7 deterministic ATS dimensions and actual job requirements.
+          </p>
+        </div>
+
+        <!-- 7-Category Detailed Score Breakdown -->
+        <div class="input-card" style="margin-bottom:0;">
+          <div class="card-title-row" style="margin-bottom: 12px;">
+            <h3><i class="fa-solid fa-list-check" style="color:var(--primary);"></i> Deterministic Score Breakdown (100 Pts)</h3>
+            <span class="pill-badge" id="breakdown-total-badge" style="font-size:0.75rem;">Total: 0 / 100</span>
+          </div>
+
+          <div class="breakdown-criteria-list">
+            <!-- 1. Keyword Matching (30 pts) -->
+            <div class="criteria-row">
+              <div class="criteria-header">
+                <span class="criteria-label"><i class="fa-solid fa-crosshairs"></i> Keyword Matching</span>
+                <span class="criteria-points" id="score-keywords-val">0 / 30 pts</span>
+              </div>
+              <div class="criteria-track">
+                <div class="criteria-fill" id="score-keywords-bar" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- 2. Skills Matching (25 pts) -->
+            <div class="criteria-row">
+              <div class="criteria-header">
+                <span class="criteria-label"><i class="fa-solid fa-microchip"></i> Skills Matching</span>
+                <span class="criteria-points" id="score-skills-val">0 / 25 pts</span>
+              </div>
+              <div class="criteria-track">
+                <div class="criteria-fill" id="score-skills-bar" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- 3. Experience Relevance (15 pts) -->
+            <div class="criteria-row">
+              <div class="criteria-header">
+                <span class="criteria-label"><i class="fa-solid fa-briefcase"></i> Experience Relevance</span>
+                <span class="criteria-points" id="score-experience-val">0 / 15 pts</span>
+              </div>
+              <div class="criteria-track">
+                <div class="criteria-fill" id="score-experience-bar" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- 4. Education Relevance (10 pts) -->
+            <div class="criteria-row">
+              <div class="criteria-header">
+                <span class="criteria-label"><i class="fa-solid fa-graduation-cap"></i> Education Relevance</span>
+                <span class="criteria-points" id="score-education-val">0 / 10 pts</span>
+              </div>
+              <div class="criteria-track">
+                <div class="criteria-fill" id="score-education-bar" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- 5. Resume Structure (10 pts) -->
+            <div class="criteria-row">
+              <div class="criteria-header">
+                <span class="criteria-label"><i class="fa-solid fa-folder-tree"></i> Resume Structure</span>
+                <span class="criteria-points" id="score-structure-val">0 / 10 pts</span>
+              </div>
+              <div class="criteria-track">
+                <div class="criteria-fill" id="score-structure-bar" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- 6. Contact Information (5 pts) -->
+            <div class="criteria-row">
+              <div class="criteria-header">
+                <span class="criteria-label"><i class="fa-solid fa-address-book"></i> Contact Information</span>
+                <span class="criteria-points" id="score-contact-val">0 / 5 pts</span>
+              </div>
+              <div class="criteria-track">
+                <div class="criteria-fill" id="score-contact-bar" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- 7. Readability (5 pts) -->
+            <div class="criteria-row">
+              <div class="criteria-header">
+                <span class="criteria-label"><i class="fa-solid fa-font"></i> Readability & Format</span>
+                <span class="criteria-points" id="score-readability-val">0 / 5 pts</span>
+              </div>
+              <div class="criteria-track">
+                <div class="criteria-fill" id="score-readability-bar" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dual Charts Grid: Skills Matching Chart + Score Breakdown Chart -->
+      <div class="charts-dual-grid">
+        <!-- Chart 1: Skill Matching Chart (Doughnut: Green Matched vs Red/Orange Missing) -->
+        <div class="chart-box">
+          <div class="chart-box-header">
+            <h3><i class="fa-solid fa-chart-pie" style="color:var(--primary);"></i> Skill Matching Breakdown</h3>
+            <span class="pill-badge" id="skill-chart-badge" style="font-size:0.75rem;">Skills Coverage</span>
+          </div>
+          <div class="chart-canvas-container">
+            <canvas id="skillMatchingChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Chart 2: Score Breakdown Chart (Horizontal Bar: Earned vs Max for all 7 Criteria) -->
+        <div class="chart-box">
+          <div class="chart-box-header">
+            <h3><i class="fa-solid fa-chart-column" style="color:var(--primary);"></i> Criteria Points Distribution</h3>
+            <span class="pill-badge" style="font-size:0.75rem;">Earned vs Max</span>
+          </div>
+          <div class="chart-canvas-container">
+            <canvas id="scoreBreakdownChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Matched & Missing Skills and Keywords Grid -->
+      <div class="taxonomies-grid">
+        <!-- Technical Skills Card -->
+        <div class="keywords-breakdown-card" style="margin-bottom:0;">
+          <div class="card-title-row">
+            <h3><i class="fa-solid fa-microchip" style="color:var(--primary);"></i> Technical Skills</h3>
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Required Skills Coverage</span>
+          </div>
+          <div class="keywords-cols">
+            <div class="keyword-col matched">
+              <h4>
+                <i class="fa-solid fa-circle-check"></i> 
+                <span>Matched Skills</span>
+                <span class="pill-badge" id="matched-skills-badge" style="background:var(--success-bg); color:#065f46; border-color:var(--success-border); font-size:0.75rem; padding:2px 8px;">0</span>
+              </h4>
+              <div class="tag-cloud" id="matched-skills-container"></div>
+            </div>
+            <div class="keyword-col missing">
+              <h4>
+                <i class="fa-solid fa-circle-exclamation"></i> 
+                <span>Missing Skills</span>
+                <span class="pill-badge" id="missing-skills-badge" style="background:#fee2e2; color:#991b1b; border-color:#fca5a5; font-size:0.75rem; padding:2px 8px;">0</span>
+              </h4>
+              <div class="tag-cloud" id="missing-skills-container"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Domain Keywords Card -->
+        <div class="keywords-breakdown-card" style="margin-bottom:0;">
+          <div class="card-title-row">
+            <h3><i class="fa-solid fa-tags" style="color:var(--primary);"></i> Target Keywords</h3>
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Job Description Terms</span>
+          </div>
+          <div class="keywords-cols">
+            <div class="keyword-col matched">
+              <h4>
+                <i class="fa-solid fa-circle-check"></i> 
+                <span>Matched Keywords</span>
+                <span class="pill-badge" id="matched-keywords-badge" style="background:var(--success-bg); color:#065f46; border-color:var(--success-border); font-size:0.75rem; padding:2px 8px;">0</span>
+              </h4>
+              <div class="tag-cloud" id="matched-keywords-container"></div>
+            </div>
+            <div class="keyword-col missing">
+              <h4>
+                <i class="fa-solid fa-circle-exclamation"></i> 
+                <span>Missing Keywords</span>
+                <span class="pill-badge" id="missing-keywords-badge" style="background:var(--warning-bg); color:#92400e; border-color:var(--warning-border); font-size:0.75rem; padding:2px 8px;">0</span>
+              </h4>
+              <div class="tag-cloud" id="missing-keywords-container"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detected Resume Sections -->
+      <div class="sections-card">
+        <div class="card-title-row">
+          <h3><i class="fa-solid fa-folder-tree" style="color:var(--primary);"></i> Detected Standard Resume Sections</h3>
+          <span class="pill-badge" id="sections-count-badge" style="font-size:0.75rem;">5 / 5 Standard Sections</span>
+        </div>
+        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 8px;">
+          Standard section headings ensure ATS parsers correctly categorize your experience, education, and credentials without data truncation.
+        </p>
+        <div class="sections-badges-wrap" id="sections-badges-wrap">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Feedback & Actionable Recommendations -->
+      <div class="feedback-card">
+        <div class="card-title-row">
+          <h3><i class="fa-solid fa-lightbulb" style="color:var(--primary);"></i> Actionable Improvement Suggestions</h3>
+          <span class="pill-badge" style="font-size:0.75rem;">Deterministic Optimization</span>
+        </div>
+        <ul class="recommendations-list" id="recommendations-list">
+          <!-- Populated dynamically -->
+        </ul>
+      </div>
+
+      <!-- Bottom CTAs -->
+      <div class="results-cta-row">
+        <button type="button" class="btn btn-secondary" id="btn-download-report">
+          <i class="fa-solid fa-download"></i> Download Detailed ATS Report
+        </button>
+        <button type="button" class="btn btn-ghost" id="btn-reset-analysis">
+          <i class="fa-solid fa-arrow-rotate-left"></i> Reset Analysis
+        </button>
+        <a href="dashboard.html" class="btn btn-primary">
+          <i class="fa-solid fa-chart-line"></i> View in Dashboard
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="border:none; padding-top:0;">
+        <div>
+          &copy; <span id="current-year">2026</span> ResumeX AI – AI Resume Analyzer & Career Advisor.
+        </div>
+        <div style="display:flex; gap:16px;">
+          <a href="index.html">Home</a>
+          <a href="dashboard.html">Dashboard</a>
+          <a href="login.html">Sign In</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CDN Libraries: Chart.js, PDF.js, Mammoth.js, Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+
+  <!-- Custom Core Modules -->
+  <script src="js/document-parser.js"></script>
+  <script src="js/ats-engine.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/analyzer.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 627 >>
+stream
+BT
+/F1 12 Tf
+72 720 Td
+(ALEX MORGAN) Tj
+0 -20 Td
+(alex.morgan@example.com | 415-555-0192 | San Francisco, CA | github.com/alexmorgan) Tj
+0 -20 Td
+(PROFESSIONAL SUMMARY) Tj
+0 -20 Td
+(Senior Full-Stack Engineer with 6+ years experience in TypeScript, React, Node.js, Python, AWS.) Tj
+0 -20 Td
+(TECHNICAL SKILLS: TypeScript, JavaScript, React, Next.js, Node.js, Python, AWS, Docker, PostgreSQL, Redis, Jest) Tj
+0 -20 Td
+(WORK EXPERIENCE: Senior Engineer at CloudScale Systems. Architected microservices with 99.9% uptime.) Tj
+0 -20 Td
+(EDUCATION: Bachelor of Science in Computer Science, University of California, Berkeley) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000000918 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+988
+%%EOF

@@ -1,0 +1,27 @@
+{
+  "name": "resumex-ai",
+  "version": "1.0.0",
+  "description": "ResumeX AI – AI Resume Analyzer & Career Advisor",
+  "main": "serve.js",
+  "scripts": {
+    "start": "node serve.js",
+    "test": "node test/test-ats-engine.js && node test/test-extraction-and-ats.js && node test/test-supabase-auth.js",
+    "test:auth": "node test/test-supabase-auth.js",
+    "test:supabase": "node test/test-supabase.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.48.1"
+  },
+  "keywords": [
+    "resume-analyzer",
+    "ats-scanner",
+    "threejs",
+    "chartjs",
+    "career-advisor",
+    "pdfjs",
+    "mammoth",
+    "supabase"
+  ],
+  "author": "ResumeX AI Team",
+  "license": "MIT"
+}
