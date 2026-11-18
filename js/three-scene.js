@@ -1,5 +1,5 @@
 /**
- * ResumeX AI - Interactive Three.js 3D Resume Document & Scene
+ * CareerGuide.AI - Interactive Three.js 3D Career Document & Scene
  * Features: Realistic 3D floating document, procedural canvas texture,
  * orbiting geometric accents, mouse-follow parallax, and WebGL fallback.
  */
@@ -123,7 +123,7 @@
   }
 
   /**
-   * Generates a high-resolution 2D canvas texture resembling a clean ATS resume
+   * Generates a high-resolution 2D canvas texture resembling a clean ATS resume in dark mode
    */
   function createResumeTexture() {
     const canvas = document.createElement('canvas');
@@ -131,29 +131,29 @@
     canvas.height = 1400;
     const ctx = canvas.getContext('2d');
 
-    // White paper background
-    ctx.fillStyle = '#ffffff';
+    // Obsidian dark card background
+    ctx.fillStyle = '#12141d';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Subtle paper edge border
-    ctx.strokeStyle = '#e2e8f0';
+    // Subtle sleek border
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
     ctx.lineWidth = 4;
     ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
 
-    // Top Header Banner with soft gradient
+    // Top Header Banner with radiant gradient
     const headerGrad = ctx.createLinearGradient(0, 0, canvas.width, 0);
-    headerGrad.addColorStop(0, '#4f46e5');
-    headerGrad.addColorStop(1, '#7c3aed');
+    headerGrad.addColorStop(0, '#6366f1');
+    headerGrad.addColorStop(1, '#8b5cf6');
     ctx.fillStyle = headerGrad;
     ctx.fillRect(40, 40, canvas.width - 80, 140);
 
     // Profile photo placeholder
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = '#181b28';
     ctx.beginPath();
     ctx.arc(110, 110, 44, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.fillStyle = '#e0e7ff';
+    ctx.fillStyle = '#2d334d';
     ctx.beginPath();
     ctx.arc(110, 110, 38, 0, Math.PI * 2);
     ctx.fill();
@@ -164,7 +164,7 @@
     ctx.fillText('SARAH CHEN', 180, 95);
 
     ctx.font = '500 20px "Plus Jakarta Sans", sans-serif';
-    ctx.fillStyle = '#c7d2fe';
+    ctx.fillStyle = '#e0e7ff';
     ctx.fillText('Senior Full-Stack Engineer | Cloud Architecture', 180, 130);
 
     // ATS Match Seal in Top Corner
@@ -183,7 +183,7 @@
 
     // Helper to draw simulated resume text lines
     function drawSectionHeader(title, y) {
-      ctx.fillStyle = '#0f172a';
+      ctx.fillStyle = '#f8fafc';
       ctx.font = 'bold 22px "Plus Jakarta Sans", sans-serif';
       ctx.fillText(title, 50, y);
 
@@ -195,7 +195,7 @@
       ctx.stroke();
     }
 
-    function drawLine(x, y, w, h = 8, color = '#cbd5e1') {
+    function drawLine(x, y, w, h = 8, color = '#2e3347') {
       ctx.fillStyle = color;
       ctx.beginPath();
       ctx.roundRect(x, y, w, h, 4);
@@ -204,37 +204,37 @@
 
     // Section 1: Executive Summary
     drawSectionHeader('PROFESSIONAL SUMMARY', 230);
-    drawLine(50, 260, 920, 10, '#64748b');
-    drawLine(50, 282, 880, 9, '#94a3b8');
-    drawLine(50, 302, 750, 9, '#94a3b8');
+    drawLine(50, 260, 920, 10, '#475569');
+    drawLine(50, 282, 880, 9, '#334155');
+    drawLine(50, 302, 750, 9, '#334155');
 
     // Section 2: Experience
     drawSectionHeader('WORK EXPERIENCE', 360);
     
     // Job 1
-    ctx.fillStyle = '#1e293b';
+    ctx.fillStyle = '#f1f5f9';
     ctx.font = 'bold 18px "Plus Jakarta Sans", sans-serif';
     ctx.fillText('Lead Software Engineer • CloudScale Solutions', 50, 395);
-    ctx.fillStyle = '#64748b';
+    ctx.fillStyle = '#94a3b8';
     ctx.font = '15px "Plus Jakarta Sans", sans-serif';
     ctx.fillText('2021 — PRESENT', 800, 395);
 
-    drawLine(50, 415, 900, 8, '#94a3b8');
-    drawLine(50, 433, 850, 8, '#94a3b8');
-    drawLine(50, 451, 820, 8, '#94a3b8');
-    drawLine(50, 469, 640, 8, '#94a3b8');
+    drawLine(50, 415, 900, 8, '#334155');
+    drawLine(50, 433, 850, 8, '#334155');
+    drawLine(50, 451, 820, 8, '#334155');
+    drawLine(50, 469, 640, 8, '#334155');
 
     // Job 2
-    ctx.fillStyle = '#1e293b';
+    ctx.fillStyle = '#f1f5f9';
     ctx.font = 'bold 18px "Plus Jakarta Sans", sans-serif';
     ctx.fillText('Senior Full Stack Developer • NexaTech Labs', 50, 520);
-    ctx.fillStyle = '#64748b';
+    ctx.fillStyle = '#94a3b8';
     ctx.font = '15px "Plus Jakarta Sans", sans-serif';
     ctx.fillText('2018 — 2021', 820, 520);
 
-    drawLine(50, 540, 890, 8, '#94a3b8');
-    drawLine(50, 558, 860, 8, '#94a3b8');
-    drawLine(50, 576, 780, 8, '#94a3b8');
+    drawLine(50, 540, 890, 8, '#334155');
+    drawLine(50, 558, 860, 8, '#334155');
+    drawLine(50, 576, 780, 8, '#334155');
 
     // Section 3: Technical Skills (Pills)
     drawSectionHeader('TECHNICAL SKILLS & KEYWORDS', 635);
@@ -258,18 +258,18 @@
       }
 
       // Pill background
-      ctx.fillStyle = '#eef2ff';
+      ctx.fillStyle = 'rgba(99, 102, 241, 0.18)';
       ctx.beginPath();
       ctx.roundRect(pillX, pillY, pillWidth, 30, 15);
       ctx.fill();
 
       // Pill border
-      ctx.strokeStyle = '#c7d2fe';
+      ctx.strokeStyle = 'rgba(99, 102, 241, 0.45)';
       ctx.lineWidth = 1.5;
       ctx.stroke();
 
       // Pill text
-      ctx.fillStyle = '#4338ca';
+      ctx.fillStyle = '#c7d2fe';
       ctx.fillText(skill, pillX + 12, pillY + 21);
 
       pillX += pillWidth + 12;
@@ -277,22 +277,22 @@
 
     // Section 4: Education & Certifications
     drawSectionHeader('EDUCATION & CERTIFICATIONS', 830);
-    drawLine(50, 860, 880, 9, '#64748b');
-    drawLine(50, 882, 700, 8, '#94a3b8');
-    drawLine(50, 910, 850, 9, '#64748b');
-    drawLine(50, 932, 620, 8, '#94a3b8');
+    drawLine(50, 860, 880, 9, '#475569');
+    drawLine(50, 882, 700, 8, '#334155');
+    drawLine(50, 910, 850, 9, '#475569');
+    drawLine(50, 932, 620, 8, '#334155');
 
     // Section 5: Key Achievements
     drawSectionHeader('KEY METRICS & IMPACT', 990);
     drawLine(50, 1020, 900, 8, '#10b981');
-    drawLine(50, 1040, 860, 8, '#94a3b8');
-    drawLine(50, 1060, 780, 8, '#94a3b8');
-    drawLine(50, 1080, 840, 8, '#94a3b8');
+    drawLine(50, 1040, 860, 8, '#334155');
+    drawLine(50, 1060, 780, 8, '#334155');
+    drawLine(50, 1080, 840, 8, '#334155');
 
     // Subtle bottom watermark
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle = '#64748b';
     ctx.font = '14px "Plus Jakarta Sans", sans-serif';
-    ctx.fillText('Verified with ResumeX AI Engine', 50, 1340);
+    ctx.fillText('Verified with CareerGuide.AI Engine', 50, 1340);
 
     const texture = new THREE.CanvasTexture(canvas);
     texture.minFilter = THREE.LinearFilter;
@@ -315,26 +315,26 @@
     const frontTexture = createResumeTexture();
 
     // Materials for 6 faces of box
-    const paperWhiteMat = new THREE.MeshStandardMaterial({
-      color: 0xffffff,
-      roughness: 0.35,
-      metalness: 0.05
+    const paperMat = new THREE.MeshStandardMaterial({
+      color: 0x141624,
+      roughness: 0.45,
+      metalness: 0.15
     });
 
     const frontFaceMat = new THREE.MeshStandardMaterial({
       map: frontTexture,
-      roughness: 0.3,
-      metalness: 0.05
+      roughness: 0.35,
+      metalness: 0.1
     });
 
     // Order: +X, -X, +Y, -Y, +Z (front), -Z (back)
     const materials = [
-      paperWhiteMat,
-      paperWhiteMat,
-      paperWhiteMat,
-      paperWhiteMat,
+      paperMat,
+      paperMat,
+      paperMat,
+      paperMat,
       frontFaceMat,
-      paperWhiteMat
+      paperMat
     ];
 
     const docGeometry = new THREE.BoxGeometry(docWidth, docHeight, docThickness);
@@ -346,7 +346,7 @@
     const edgeMat = new THREE.LineBasicMaterial({
       color: 0x6366f1,
       transparent: true,
-      opacity: 0.35,
+      opacity: 0.45,
       linewidth: 1
     });
     const edgeWireframe = new THREE.LineSegments(edgeGeo, edgeMat);

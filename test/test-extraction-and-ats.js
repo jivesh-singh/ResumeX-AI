@@ -1,5 +1,5 @@
 /**
- * ResumeX AI - End-to-End Extraction & ATS Integration Test
+ * CareerGuide.AI - End-to-End Extraction & ATS Integration Test
  * Verifies real file parsing on test/sample-resume.pdf, test/sample-scanned.pdf,
  * and test/sample-resume.docx, feeding extracted text into AtsEngine.
  */

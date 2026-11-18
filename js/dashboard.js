@@ -1,5 +1,5 @@
 /**
- * ResumeX AI - Dashboard Controller
+ * CareerGuide.AI - Dashboard Controller
  * Authenticated user view: guards access with AuthManager.requireAuth(),
  * displays logged-in user profile, fetches scan history from Supabase / localStorage,
  * and renders interactive Chart.js metrics and historical scan tables.
@@ -53,6 +53,7 @@ async function initDashboard() {
   if (btnClearHistory) {
     btnClearHistory.addEventListener('click', async () => {
       if (confirm('Are you sure you want to clear your scan history?')) {
+        localStorage.removeItem('careerguide_scans');
         localStorage.removeItem('resumex_scans');
         if (window.SupabaseConfig && window.SupabaseConfig.isSupabaseConfigured() && user && user.id) {
           const client = window.SupabaseConfig.getClient();
@@ -96,14 +97,14 @@ function updateUserProfileDisplay(user) {
   if (badgeEl) {
     if (isCloud) {
       badgeEl.textContent = 'Supabase Verified';
-      badgeEl.style.background = '#ecfdf5';
-      badgeEl.style.color = '#065f46';
-      badgeEl.style.borderColor = '#a7f3d0';
+      badgeEl.style.background = 'var(--success-bg)';
+      badgeEl.style.color = '#34d399';
+      badgeEl.style.borderColor = 'var(--success-border)';
     } else {
-      badgeEl.textContent = 'Demo Mode (Local)';
-      badgeEl.style.background = '#fffbeb';
-      badgeEl.style.color = '#92400e';
-      badgeEl.style.borderColor = '#fde68a';
+      badgeEl.textContent = 'Local Session Active';
+      badgeEl.style.background = 'var(--primary-light)';
+      badgeEl.style.color = '#a5b4fc';
+      badgeEl.style.borderColor = 'rgba(99, 102, 241, 0.3)';
     }
   }
 }
@@ -146,7 +147,7 @@ async function loadScansForUser(user) {
   }
 
   // Fallback to localStorage
-  const scansJson = localStorage.getItem('resumex_scans');
+  const scansJson = localStorage.getItem('careerguide_scans') || localStorage.getItem('resumex_scans');
   try {
     return scansJson ? JSON.parse(scansJson) : [];
   } catch (e) {
@@ -246,12 +247,12 @@ function renderDashboardCharts(scans) {
         datasets: [{
           label: 'ATS Match Score (%)',
           data: data,
-          borderColor: '#4f46e5',
-          backgroundColor: 'rgba(79, 70, 229, 0.08)',
+          borderColor: '#6366f1',
+          backgroundColor: 'rgba(99, 102, 241, 0.12)',
           fill: true,
           tension: 0.35,
-          pointBackgroundColor: '#4f46e5',
-          pointBorderColor: '#ffffff',
+          pointBackgroundColor: '#6366f1',
+          pointBorderColor: '#12141c',
           pointRadius: 5,
           borderWidth: 2.5
         }]
@@ -263,11 +264,12 @@ function renderDashboardCharts(scans) {
           y: {
             min: 0,
             max: 100,
-            grid: { color: 'rgba(226, 232, 240, 0.7)' },
-            ticks: { stepSize: 20 }
+            grid: { color: 'rgba(255, 255, 255, 0.08)' },
+            ticks: { color: '#94a3b8', stepSize: 20 }
           },
           x: {
-            grid: { display: false }
+            grid: { display: false },
+            ticks: { color: '#94a3b8' }
           }
         },
         plugins: {
@@ -297,9 +299,9 @@ function renderDashboardCharts(scans) {
         labels: ['Tier 1 (85%+ High)', 'Tier 2 (70-84% Moderate)', 'Tier 3 (<70% Low)'],
         datasets: [{
           data: [tierHigh, tierMid, tierLow],
-          backgroundColor: ['#10b981', '#4f46e5', '#f59e0b'],
+          backgroundColor: ['#10b981', '#6366f1', '#f59e0b'],
           borderWidth: 2,
-          borderColor: '#ffffff'
+          borderColor: '#12141c'
         }]
       },
       options: {
@@ -308,7 +310,7 @@ function renderDashboardCharts(scans) {
         plugins: {
           legend: {
             position: 'bottom',
-            labels: { boxWidth: 12, font: { family: 'Plus Jakarta Sans', size: 11 } }
+            labels: { boxWidth: 12, color: '#cbd5e1', font: { family: 'Plus Jakarta Sans', size: 11 } }
           }
         },
         cutout: '68%'

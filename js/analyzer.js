@@ -1,6 +1,6 @@
 /**
- * ResumeX AI - Analyzer UI Orchestrator
- * Connects DocumentParser and AtsEngine with the Analyzer interface.
+ * CareerGuide.AI - Analyzer UI Orchestrator
+ * Connects DocumentParser and AtsEngine with the Career Guidance & Analyzer interface.
  * Implements deterministic scoring, Chart.js visualizations, OCR warnings,
  * reset functionality, and report export.
  */
@@ -310,11 +310,6 @@ Key Requirements:
       return;
     }
 
-    if (!jobDesc || jobDesc.length < 30) {
-      showValidationError('Please enter a target job description (at least 30 characters) to calibrate ATS scoring.');
-      return;
-    }
-
     clearValidationError();
     hideOcrWarning();
 
@@ -334,9 +329,9 @@ Key Requirements:
 
     const stages = [
       { pct: 25, title: 'Extracting text streams & structural headers...', desc: 'Verifying ATS section readability, contact details, and document hierarchy' },
-      { pct: 55, title: 'Parsing job requirements & technical taxonomy...', desc: 'Extracting required programming languages, tools, frameworks, and qualifications' },
+      { pct: 55, title: 'Analyzing technical skills & career trajectory...', desc: 'Mapping candidate competencies against top industry hiring benchmarks' },
       { pct: 80, title: 'Executing 7-point deterministic scoring algorithm...', desc: 'Computing keyword matching, skills coverage, experience alignment, and formatting' },
-      { pct: 100, title: 'Compiling diagnostic report & gap matrix...', desc: 'Finalizing charts and prioritized action items' }
+      { pct: 100, title: 'Synthesizing job matches, skill gaps & career roadmap...', desc: 'Finalizing high-fit career roles and skills to add in resume' }
     ];
 
     let stageIdx = 0;
@@ -363,7 +358,7 @@ Key Requirements:
               results.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
             if (window.showToast) {
-              window.showToast(`Analysis Complete! Overall ATS Score: ${analysis.overallScore}/100`, 'success');
+              window.showToast(`Career Guidance Complete! ATS Score: ${analysis.overallScore}/100`, 'success');
             }
           } catch (err) {
             console.error('ATS Engine error:', err);
@@ -371,9 +366,9 @@ Key Requirements:
             if (btnAnalyze) btnAnalyze.disabled = false;
             showValidationError(`Analysis error: ${err.message}`);
           }
-        }, 350);
+        }, 300);
       }
-    }, 400);
+    }, 320);
   }
 
   /**
@@ -482,9 +477,9 @@ Key Requirements:
         labels: [`Matched Skills (${matchedCount})`, `Missing Skills (${missingCount})`],
         datasets: [{
           data: [matchedCount || (missingCount === 0 ? 1 : 0), missingCount],
-          backgroundColor: ['#10b981', '#ef4444'], // Green for matched, Red for missing
-          hoverBackgroundColor: ['#059669', '#dc2626'],
-          borderColor: '#ffffff',
+          backgroundColor: ['#10b981', '#f43f5e'], // Green for matched, Rose for missing skills to add
+          hoverBackgroundColor: ['#059669', '#e11d48'],
+          borderColor: '#12141c',
           borderWidth: 2
         }]
       },
@@ -496,6 +491,7 @@ Key Requirements:
             position: 'bottom',
             labels: {
               boxWidth: 12,
+              color: '#cbd5e1',
               font: { family: 'Plus Jakarta Sans', size: 11, weight: '600' }
             }
           },
@@ -552,13 +548,13 @@ Key Requirements:
           {
             label: 'Earned Points',
             data: earned,
-            backgroundColor: '#4f46e5',
+            backgroundColor: '#6366f1',
             borderRadius: 4
           },
           {
             label: 'Max Possible',
             data: maxes,
-            backgroundColor: 'rgba(226, 232, 240, 0.7)',
+            backgroundColor: 'rgba(255, 255, 255, 0.12)',
             borderRadius: 4
           }
         ]
@@ -571,12 +567,12 @@ Key Requirements:
           x: {
             min: 0,
             max: 30,
-            grid: { color: 'rgba(226, 232, 240, 0.6)' },
-            ticks: { font: { family: 'Plus Jakarta Sans', size: 10 } }
+            grid: { color: 'rgba(255, 255, 255, 0.08)' },
+            ticks: { color: '#94a3b8', font: { family: 'Plus Jakarta Sans', size: 10 } }
           },
           y: {
             grid: { display: false },
-            ticks: { font: { family: 'Plus Jakarta Sans', size: 10, weight: '600' } }
+            ticks: { color: '#cbd5e1', font: { family: 'Plus Jakarta Sans', size: 10, weight: '600' } }
           }
         },
         plugins: {
@@ -584,6 +580,7 @@ Key Requirements:
             position: 'bottom',
             labels: {
               boxWidth: 12,
+              color: '#cbd5e1',
               font: { family: 'Plus Jakarta Sans', size: 11 }
             }
           }
@@ -800,7 +797,7 @@ Key Requirements:
                       <i class="fa-solid fa-bolt" style="color:#f59e0b;"></i>
                       <span>${escapeHtml(act.skill)}</span>
                     </div>
-                    <span class="pill-badge" style="font-size:0.7rem; background:#fffbeb; color:#b45309; border-color:#fde68a;">
+                    <span class="pill-badge" style="font-size:0.7rem; background:var(--warning-bg); color:#fbbf24; border:1px solid var(--warning-border);">
                       <i class="fa-regular fa-clock"></i> ~${escapeHtml(act.timeEstimate)}
                     </span>
                   </div>
@@ -813,13 +810,13 @@ Key Requirements:
           // Portfolio Project Blueprint
           const bp = phase.projectBlueprint;
           bodyHtml = `
-            <div class="roadmap-action-box" style="background:#ffffff; border-color:rgba(99, 102, 241, 0.3);">
+            <div class="roadmap-action-box" style="background:var(--surface-elevated); border:1px solid rgba(99, 102, 241, 0.35);">
               <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
                 <h5 style="font-size:0.95rem; font-weight:800; color:var(--text-main); margin:0;">
                   <i class="fa-solid fa-laptop-code" style="color:var(--primary); margin-right:6px;"></i>
                   ${escapeHtml(bp.name)}
                 </h5>
-                <span class="pill-badge" style="font-size:0.7rem; background:var(--gradient-soft); color:var(--primary);">
+                <span class="pill-badge" style="font-size:0.7rem; background:var(--gradient-soft); color:#a5b4fc; border:1px solid rgba(99, 102, 241, 0.3);">
                   Flagship Proof-of-Work
                 </span>
               </div>
@@ -828,9 +825,9 @@ Key Requirements:
               </p>
               <div style="margin-bottom:12px;">
                 <span style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); letter-spacing:0.04em;">Recommended Tech Stack:</span>
-                <div class="blueprint-meta-row">
+                <div class="blueprint-meta-row" style="display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;">
                   ${bp.techStack.map(tech => `
-                    <span class="pill-badge" style="font-size:0.75rem; background:#f1f5f9; color:var(--text-body); border-color:#e2e8f0;">${escapeHtml(tech)}</span>
+                    <span class="pill-badge" style="font-size:0.75rem; background:var(--surface-subtle); color:var(--text-body); border:1px solid var(--border-subtle);">${escapeHtml(tech)}</span>
                   `).join('')}
                 </div>
               </div>
@@ -934,14 +931,14 @@ Key Requirements:
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `ResumeX_ATS_Report_${docName.replace(/\.[^/.]+$/, '')}_${Date.now()}.txt`;
+    link.download = `CareerGuide_ATS_Report_${docName.replace(/\.[^/.]+$/, '')}_${Date.now()}.txt`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
 
     if (window.showToast) {
-      window.showToast('Official ATS compliance report downloaded successfully!', 'success');
+      window.showToast('Career guidance & ATS report downloaded successfully!', 'success');
     }
   }
 
@@ -950,9 +947,9 @@ Key Requirements:
    */
   function saveAnalysisToStorage(analysis, fileName, jobDesc) {
     try {
-      const scans = JSON.parse(localStorage.getItem('resumex_scans') || '[]');
-      const firstLine = jobDesc.split('\n')[0].replace(/[^a-zA-Z0-9\s-]/g, '').trim();
-      const jobTitle = firstLine.substring(0, 32) || 'Target Software Role';
+      const scans = JSON.parse(localStorage.getItem('careerguide_scans') || localStorage.getItem('resumex_scans') || '[]');
+      const firstLine = jobDesc ? jobDesc.split('\n')[0].replace(/[^a-zA-Z0-9\s-]/g, '').trim() : '';
+      const jobTitle = firstLine.substring(0, 32) || (analysis.careerFit?.primaryRole?.title || 'Target Software Role');
       const targetRole = (analysis.careerFit && analysis.careerFit.primaryRole)
         ? analysis.careerFit.primaryRole.title
         : jobTitle;
@@ -972,6 +969,7 @@ Key Requirements:
 
       scans.unshift(scanEntry);
       if (scans.length > 20) scans.pop();
+      localStorage.setItem('careerguide_scans', JSON.stringify(scans));
       localStorage.setItem('resumex_scans', JSON.stringify(scans));
 
       // Optional cloud sync if Supabase is configured and user is authenticated

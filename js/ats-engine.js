@@ -1,5 +1,5 @@
 /**
- * ResumeX AI - Deterministic ATS Scoring & Analysis Engine
+ * CareerGuide.AI - Deterministic ATS Scoring & Career Guidance Engine
  * Calculates exact ATS score out of 100 with 7 explicit criteria:
  * 1. Keyword matching: 30 pts
  * 2. Skills matching: 25 pts
@@ -654,8 +654,10 @@
     if (!resumeText || resumeText.trim().length < 10) {
       throw new Error('Resume text is empty or too short for ATS evaluation.');
     }
+    // If no target job description is provided, synthesize an industry benchmark profile
+    // based on candidate's detected skills and optimal career trajectory
     if (!jobDescription || jobDescription.trim().length < 15) {
-      throw new Error('Job description is required to perform ATS matching.');
+      jobDescription = synthesizeBenchmarkJobDescription(resumeText);
     }
 
     const keywords = evaluateKeywordMatching(resumeText, jobDescription);
@@ -1014,6 +1016,41 @@
   }
 
   /**
+   * Helper: Synthesizes a benchmark job requirements profile
+   * when the user uploads a resume for pure career guidance without pasting a specific JD
+   */
+  function synthesizeBenchmarkJobDescription(resumeText) {
+    const lowerResume = (resumeText || '').toLowerCase();
+    let bestArchetype = ROLE_ARCHETYPES[0];
+    let maxScore = -1;
+
+    for (let i = 0; i < ROLE_ARCHETYPES.length; i++) {
+      const arch = ROLE_ARCHETYPES[i];
+      let score = 0;
+      for (let j = 0; j < arch.coreSkills.length; j++) {
+        if (matchSkillNormalized(lowerResume, arch.coreSkills[j])) score += 3;
+      }
+      for (let k = 0; k < arch.domainKeywords.length; k++) {
+        if (lowerResume.includes(arch.domainKeywords[k])) score += 2;
+      }
+      if (score > maxScore) {
+        maxScore = score;
+        bestArchetype = arch;
+      }
+    }
+
+    return `Position: ${bestArchetype.baseTitle}
+Location: Target Tech Hub / Hybrid / Remote
+Role Focus: ${bestArchetype.domainKeywords.join(', ')}
+
+Core Qualifications & Expected Competencies:
+• Hands-on expertise and practical experience with ${bestArchetype.coreSkills.slice(0, 8).join(', ')}.
+• Proven architectural execution in ${bestArchetype.projectBlueprint.name}.
+• Working knowledge of ${bestArchetype.coreSkills.slice(4).join(', ')}.
+• Clean architecture, unit and integration testing, RESTful APIs, and CI/CD pipelines.`;
+  }
+
+  /**
    * Core Career Advisory Evaluator:
    * Identifies the best-fit job role, adjacent career opportunities,
    * and builds a deterministic 4-phase transition roadmap.
@@ -1276,7 +1313,7 @@
     const subDivider = '-'.repeat(68);
 
     return `${divider}
-RESUMEX AI - OFFICIAL ATS COMPLIANCE & DIAGNOSTIC REPORT
+CAREERGUIDE.AI - OFFICIAL ATS COMPLIANCE & CAREER GUIDANCE REPORT
 Generated: ${new Date().toLocaleString()}
 Document:  ${documentName}
 ${divider}
@@ -1364,7 +1401,7 @@ ${analysis.careerFit.roadmap.phases[2].projectBlueprint.deliverables.map(d => ` 
 ${analysis.careerFit.roadmap.phases[3].actions.map(a => `   - [${a.topic}]: ${a.tips}`).join('\n')}
 ` : ''}
 ${divider}
-Engine: ResumeX AI Deterministic Analyzer (Client-side Privacy Protected)
+Engine: CareerGuide.AI Deterministic Analyzer (Client-side Privacy Protected)
 No resume data was transmitted to external servers.
 ${divider}`;
   }
@@ -1373,6 +1410,7 @@ ${divider}`;
     analyzeResume: analyzeResume,
     generateReport: generateReport,
     evaluateCareerFit: evaluateCareerFit,
+    synthesizeBenchmarkJobDescription: synthesizeBenchmarkJobDescription,
     ROLE_ARCHETYPES: ROLE_ARCHETYPES,
     SKILLS_DICTIONARY: SKILLS_DICTIONARY
   };

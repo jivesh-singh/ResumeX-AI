@@ -1,8 +1,8 @@
-# ResumeX AI – AI Resume Analyzer & Career Advisor
+# CareerGuide.AI – AI Career Guidance & ATS Resume Intelligence
 
-A modern, high-performance web platform designed to parse PDF and DOCX applicant resumes locally in the browser, calculate an exact **deterministic 100-point ATS compatibility score**, identify skill gaps, and provide actionable career trajectory recommendations.
+A high-performance web platform featuring a sleek obsidian dark theme designed to parse PDF, DOCX, and TXT applicant resumes locally in the browser, calculate an exact **deterministic 100-point ATS compatibility score**, discover **what jobs you can land**, identify **missing skills to add to your resume**, and generate a chronological **4-phase growth roadmap**.
 
-Built with **HTML5**, **CSS3**, **Vanilla JavaScript**, **Three.js**, **Chart.js**, **PDF.js**, and **Mammoth.js**.
+Built with **HTML5**, **CSS3 (Obsidian & Slate Dark System)**, **Vanilla JavaScript**, **Three.js 3D**, **Chart.js**, **PDF.js**, and **Mammoth.js**.
 
 ---
 
@@ -20,10 +20,10 @@ node serve.js
 Then navigate to **[http://localhost:3000](http://localhost:3000)** in your browser.
 
 ### Method 2: Direct Browser Launch
-Since ResumeX AI uses pure Vanilla web technologies with CDN libraries, you can also double-click **`index.html`** or right-click and choose **"Open with Google Chrome"** (or Edge/Brave/Firefox).
+Since CareerGuide.AI uses pure Vanilla web technologies with CDN libraries, you can also double-click **`index.html`** or right-click and choose **"Open with Google Chrome"** (or Edge/Brave/Firefox).
 
 ### Method 3: Run Automated Test Suite
-To execute the comprehensive automated test suite testing PDF/DOCX extraction, deterministic scoring, input differentiation, and OCR detection:
+To execute the comprehensive automated test suite testing PDF/DOCX extraction, deterministic scoring, career guidance benchmark synthesis, and OCR detection:
 ```bash
 npm test
 ```
@@ -33,45 +33,63 @@ npm test
 ## 📂 Project Architecture
 
 ```
-ResumeX AI/
+CareerGuide.AI/
 ├── index.html                  # Landing page with Three.js 3D hero scene, features, how it works, preview, footer
-├── analyzer.html               # Interactive resume diagnostic tool with upload, job input, keyword matching & dual charts
-├── dashboard.html              # Applicant command center displaying real scans, score trends, and skill gap insights
-├── login.html                  # Premium glassmorphic authentication page (Sign In / Create Account / Guest Demo)
+├── analyzer.html               # Career guidance & ATS diagnostic tool with upload, optional job input, job matching & dual charts
+├── dashboard.html              # Career command center displaying real scans, score trends, and skill gap insights
+├── login.html                  # Dark-themed glassmorphic authentication page (Sign In / Create Account / Guest Demo)
 ├── serve.js                    # Lightweight zero-dependency local development HTTP server
 ├── package.json                # Project configuration with start & test scripts
 ├── css/
-│   ├── style.css               # Complete design system (light theme, glassmorphism, responsive layout, breakdown bars)
+│   ├── style.css               # Complete obsidian dark design system (#0a0b10, luminous accents, responsive layout)
 │   └── animations.css          # Keyframe animations (floating 3D effects, progress bars, shimmer, glow)
 ├── js/
 │   ├── document-parser.js      # Local PDF.js & Mammoth.js text extraction, file validation, and OCR detection
-│   ├── ats-engine.js           # Deterministic 100-point scoring engine (7 criteria), suggestions, and report compiler
-│   ├── analyzer.js             # UI orchestrator, loading states, circular gauge, dual Chart.js charts, local sync
-│   ├── dashboard.js            # Dashboard controller, real scan metrics, progression & doughnut charts
+│   ├── ats-engine.js           # Deterministic 100-point scoring engine (7 criteria), career benchmark synthesis, suggestions, and report compiler
+│   ├── analyzer.js             # UI orchestrator, loading states, circular gauge, dark Chart.js charts, local sync
+│   ├── dashboard.js            # Dashboard controller, real scan metrics, dark progression & doughnut charts
 │   ├── main.js                 # Navigation drawer, header scroll detection, toast notifications, auth state
-│   └── three-scene.js          # Three.js 3D floating resume, procedural canvas texture, mouse parallax & WebGL fallback
+│   └── three-scene.js          # Three.js 3D dark floating resume, procedural canvas texture, mouse parallax & WebGL fallback
 ├── test/
-│   ├── test-ats-engine.js      # Unit tests for scoring engine, bounds, input variance, and OCR heuristic
+│   ├── test-ats-engine.js      # Unit tests for scoring engine, bounds, input variance, career guidance mode, and OCR heuristic
 │   ├── test-extraction-and-ats.js # Integration test verifying PDF and DOCX extraction with sample files
 │   ├── generate-sample-pdf.js  # Generator for digital text PDF and scanned image-only PDF
 │   └── generate-sample-docx.js # Generator for valid Word DOCX zip archive
 └── assets/
-    ├── logo.svg                # Premium vector gradient logo
+    ├── logo.svg                # Dark obsidian vector logo with luminous indigo/cyan gradient & compass star
     └── favicon.svg             # Brand vector favicon
 ```
 
 ---
 
+## 🧭 Career Guidance & Dual-Flow Analysis
+
+CareerGuide.AI supports two versatile career workflows:
+
+1. **Resume-Only Career Guidance (Zero Job Description Required)**:
+   - Simply upload your resume and click **Get Career Guidance & ATS Score**.
+   - The engine automatically parses your skills, experience, and projects to detect your best-fit **Career Archetype** (e.g. *Full-Stack Engineer*, *Frontend Engineer*, *Backend Engineer*, *DevOps / Cloud*, *Data Scientist / ML*, *Cybersecurity*, *Mobile App Developer*, *Product Manager*, etc.).
+   - It synthesizes an industry benchmark target, computes your 7-dimension ATS score, and recommends:
+     - **What job you can get**: Primary high-compatibility title and seniority tier.
+     - **What skills to add**: Critical industry competencies missing from your resume with exact phrasing suggestions.
+     - **Alternative & adjacent career tracks**: Lateral moves and pivot roles with required bridge skills.
+     - **4-Phase action roadmap**: Chronological steps from immediate resume optimization to interview mastery.
+
+2. **Targeted Job Description Calibrator**:
+   - Paste a specific job description or target role requirements to calibrate the ATS parser against exact employer criteria, keyword frequencies, and required qualifications.
+
+---
+
 ## ⚖️ Deterministic ATS Scoring Algorithm (100 Points Total)
 
-ResumeX AI does **not** generate random scores or pretend results. Every score is deterministically calculated directly from the extracted resume text against the target job description across 7 explicit criteria:
+CareerGuide.AI does **not** generate random scores or pretend results. Every score is deterministically calculated directly from the extracted resume text against target qualifications across 7 explicit criteria:
 
 | Category | Points | Calculation Logic |
 | :--- | :---: | :--- |
-| **1. Keyword Matching** | **30 pts** | Extracts key domain unigrams and multi-word phrases (e.g. `ci/cd`, `system design`, `rest api`) from the job description and evaluates whole-word token presence in the resume: `Math.round((matched / total) * 30)`. |
-| **2. Skills Matching** | **25 pts** | Evaluates explicit technical and domain competencies from a dictionary of 180+ skills (languages, frameworks, databases, cloud, DevOps, AI/ML) required by the JD against candidate skills: `Math.round((matched / total) * 25)`. |
-| **3. Experience Relevance** | **15 pts** | Detects required years in JD vs candidate years/tenure (up to 6 pts), distinct work history positions (up to 4 pts), quantified achievement metrics with `%`, `$`, or scale numbers (up to 5 pts), and verifies domain alignment. |
-| **4. Education Relevance** | **10 pts** | Compares degree requirements in the JD against detected candidate credentials. Awards 7 pts for Bachelor's/Master's/Ph.D. degree level + 3 pts for relevant STEM/domain major. Penalizes missing or unrelated degrees. |
+| **1. Keyword Matching** | **30 pts** | Extracts key domain unigrams and multi-word phrases (e.g. `ci/cd`, `system design`, `rest api`) and evaluates whole-word token presence in the resume: `Math.round((matched / total) * 30)`. |
+| **2. Skills Matching** | **25 pts** | Evaluates explicit technical and domain competencies from a dictionary of 180+ skills (languages, frameworks, databases, cloud, DevOps, AI/ML) required against candidate skills: `Math.round((matched / total) * 25)`. |
+| **3. Experience Relevance** | **15 pts** | Detects required years vs candidate years/tenure (up to 6 pts), distinct work history positions (up to 4 pts), quantified achievement metrics with `%`, `$`, or scale numbers (up to 5 pts), and verifies domain alignment. |
+| **4. Education Relevance** | **10 pts** | Compares degree requirements against detected candidate credentials. Awards 7 pts for Bachelor's/Master's/Ph.D. degree level + 3 pts for relevant STEM/domain major. Penalizes missing or unrelated degrees. |
 | **5. Resume Structure** | **10 pts** | Validates the presence of standard ATS-recognized section headers (Contact, Summary, Experience, Skills, Education) at 2 points per detected section. |
 | **6. Contact Information** | **5 pts** | Validates presence of essential contact details: Email address (2 pts), Phone number (1 pt), City/Location (1 pt), and Professional portfolio / LinkedIn link (1 pt). |
 | **7. Readability & Formatting** | **5 pts** | Evaluates document word count within optimal 300–1500 range (2 pts), consistent bullet point structure (2 pts), and absence of long run-on sentences (1 pt). |
@@ -86,7 +104,7 @@ ResumeX AI is integrated with the official **Supabase JavaScript client** for cl
 
 ### 🔑 Exactly Where to Enter Your Supabase Credentials
 
-Open [supabase-config.js](file:///c:/Users/jives/OneDrive/Desktop/ResumeX%20AI/supabase-config.js) in your editor:
+Open [supabase-config.js](file:///c:/Users/jives/OneDrive/Desktop/CarrerGuide.AI/supabase-config.js) in your editor:
 
 ```javascript
 // Step 1: Replace with your actual Project URL (starts with https:// and ends with .supabase.co)
@@ -111,13 +129,13 @@ Run the automated Supabase diagnostics command:
 ```bash
 npm run test:supabase
 ```
-You can also test the connection live directly in the browser by clicking the **"Test Supabase"** button in [dashboard.html](file:///c:/Users/jives/OneDrive/Desktop/ResumeX%20AI/dashboard.html) or [login.html](file:///c:/Users/jives/OneDrive/Desktop/ResumeX%20AI/login.html).
+You can also test the connection live directly in the browser by clicking the **"Test Supabase"** button in [dashboard.html](file:///c:/Users/jives/OneDrive/Desktop/CarrerGuide.AI/dashboard.html) or [login.html](file:///c:/Users/jives/OneDrive/Desktop/CarrerGuide.AI/login.html).
 
 ---
 
 ## 🎯 Career Advisory & Perfect Job Matching
 
-ResumeX AI does more than calculate ATS scores — it acts as a strategic career advisor by cross-referencing your verified resume skills and target job description to pinpoint:
+CareerGuide.AI does more than calculate ATS scores — it acts as a strategic career advisor by cross-referencing your verified resume skills and target job description to pinpoint:
 
 1. **Primary Highest-Compatibility Role**:
    - Synthesizes technical overlap, domain keywords, and detected experience years into a precise title (e.g. *Senior Full-Stack Software Engineer*, *AI & Machine Learning Solutions Engineer*, *Cloud Platform & DevOps Engineer*).
@@ -137,10 +155,10 @@ ResumeX AI does more than calculate ATS scores — it acts as a strategic career
 
 ## ⚡ Real Supabase Authentication & Database Setup
 
-ResumeX AI integrates official Supabase Auth (@supabase/supabase-js) with persistent sessions and route guarding:
+CareerGuide.AI integrates official Supabase Auth (@supabase/supabase-js) with persistent sessions and route guarding:
 
 - **Registration & Login**: Native email/password authentication with validation and clear error mapping.
-- **Route Guarding**: Unauthenticated visits to [dashboard.html](file:///c:/Users/jives/OneDrive/Desktop/ResumeX%20AI/dashboard.html) automatically redirect to `login.html?redirect=dashboard.html&reason=unauthenticated`.
+- **Route Guarding**: Unauthenticated visits to [dashboard.html](file:///c:/Users/jives/OneDrive/Desktop/CarrerGuide.AI/dashboard.html) automatically redirect to `login.html?redirect=dashboard.html&reason=unauthenticated`.
 - **Navigation State Sync**: Header navigation across all pages reflects the authenticated user's name and **Sign Out** button.
 
 ### Supabase Database SQL Schema
@@ -197,7 +215,7 @@ To publish this project to your GitHub account:
 
 ### Step 1: Create a New Repository on GitHub
 1. Open [https://github.com/new](https://github.com/new) in your browser.
-2. Enter Repository name: `resumex-ai` (or your preferred name).
+2. Enter Repository name: `careerguide-ai` (or your preferred name).
 3. Set visibility to **Public** or **Private**.
 4. Leave **"Initialize this repository with a README"** **UNCHECKED** (we already have a complete README and git history).
 5. Click **Create repository**.
@@ -207,13 +225,13 @@ In your terminal, run:
 
 ```bash
 # 1. Add your GitHub repository as remote origin (replace YOUR-USERNAME with your GitHub username)
-git remote add origin https://github.com/YOUR-USERNAME/resumex-ai.git
+git remote add origin https://github.com/YOUR-USERNAME/careerguide-ai.git
 
 # 2. Stage all latest files
 git add .
 
 # 3. Commit the updates
-git commit -m "feat: Add Career Advisory, Perfect Job Match & 4-Phase Roadmap"
+git commit -m "feat: Redesign to CareerGuide.AI with obsidian dark theme and automated career matching"
 
 # 4. Set default branch to main and push
 git branch -M main

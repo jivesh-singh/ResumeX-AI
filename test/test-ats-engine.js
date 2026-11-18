@@ -1,5 +1,5 @@
 /**
- * ResumeX AI - Automated ATS Scoring & Parser Test Suite
+ * CareerGuide.AI - Automated ATS Scoring & Parser Test Suite
  * Tests deterministic scoring algorithm, criteria bounds, input variance,
  * DocumentParser validation, OCR detection heuristics, and report generation.
  */
@@ -9,7 +9,7 @@ const AtsEngine = require('../js/ats-engine.js');
 const DocumentParser = require('../js/document-parser.js');
 
 console.log('====================================================');
-console.log('🧪 Starting ResumeX AI Test Suite');
+console.log('🧪 Starting CareerGuide.AI Test Suite');
 console.log('====================================================\n');
 
 let totalTests = 0;
@@ -273,7 +273,7 @@ it('generateReport compiles a full text report with all 7 criteria and data', ()
   const analysis = AtsEngine.analyzeResume(RESUME_SENIOR_DEV, JD_SOFTWARE_ENGINEER);
   const report = AtsEngine.generateReport(analysis, 'Alex_Morgan_Resume.pdf');
 
-  assert(report.includes('RESUMEX AI - OFFICIAL ATS COMPLIANCE'), 'Header present');
+  assert(report.includes('CAREERGUIDE.AI - OFFICIAL ATS COMPLIANCE') || report.includes('RESUMEX AI - OFFICIAL ATS COMPLIANCE'), 'Header present');
   assert(report.includes(`SCORE:   ${analysis.overallScore} / 100`), 'Overall score present');
   assert(report.includes('1. Keyword Matching:'), 'Criterion 1 present');
   assert(report.includes('2. Skills Matching:'), 'Criterion 2 present');
@@ -338,6 +338,15 @@ it('Career Advisory generates a 4-phase concrete roadmap with project blueprint 
   // Phase 4: Interview & Application Strategy
   assert.strictEqual(roadmap.phases[3].phase, 4);
   assert(roadmap.phases[3].actions.length >= 2, 'Phase 4 must provide interview tips and outreach strategy');
+});
+
+it('Career Guidance mode: analyzes resume without job description using synthesized benchmark', () => {
+  const result = AtsEngine.analyzeResume(RESUME_SENIOR_DEV);
+  assert(result.overallScore > 0 && result.overallScore <= 100, 'Must produce valid ATS score');
+  assert(result.careerFit, 'Must produce career fit');
+  assert(result.careerFit.primaryRole.title, 'Must recommend target role');
+  assert(result.missingSkills, 'Must identify missing skills to add');
+  assert(result.careerFit.roadmap.phases.length === 4, 'Must generate 4-phase transition roadmap');
 });
 
 console.log('\n====================================================');

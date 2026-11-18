@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Resume Analyzer & ATS Checker – ResumeX AI</title>
-  <meta name="description" content="Upload your PDF or DOCX resume and paste a job description to get instant, deterministic ATS scores, matched and missing keywords, skills, and actionable recommendations.">
+  <title>Career Guidance & ATS Resume Checker – CareerGuide.AI</title>
+  <meta name="description" content="Upload your resume to check ATS score compatibility, discover what jobs you can land, identify missing skills, and unlock a personalized career roadmap.">
   
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
@@ -26,9 +26,9 @@
   <!-- Site Navigation -->
   <header class="site-header">
     <div class="container nav-container">
-      <a href="index.html" class="brand-logo" aria-label="ResumeX AI Home">
-        <img src="assets/logo.svg" alt="ResumeX AI Logo" width="36" height="36">
-        <span>ResumeX <span class="brand-badge">AI</span></span>
+      <a href="index.html" class="brand-logo" aria-label="CareerGuide.AI Home">
+        <img src="assets/logo.svg" alt="CareerGuide.AI Logo" width="36" height="36">
+        <span>CareerGuide <span class="brand-badge">AI</span></span>
       </a>
 
       <nav aria-label="Primary Navigation">
@@ -37,7 +37,7 @@
           <li><a href="index.html#features" class="nav-link">Features</a></li>
           <li><a href="index.html#how-it-works" class="nav-link">How It Works</a></li>
           <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
-          <li><a href="analyzer.html" class="nav-link active">Analyzer</a></li>
+          <li><a href="analyzer.html" class="nav-link active">Career Guidance</a></li>
         </ul>
       </nav>
 
@@ -60,11 +60,11 @@
     <!-- Header -->
     <div class="analyzer-header">
       <span class="pill-badge" style="margin-bottom: 12px;">
-        <i class="fa-solid fa-magnifying-glass-chart"></i> Precision Diagnostic Engine
+        <i class="fa-solid fa-compass"></i> AI Career Guidance & ATS Intelligence
       </span>
-      <h1>Deterministic ATS Resume Analyzer</h1>
+      <h1>Resume ATS Score & Career Path Guidance</h1>
       <p>
-        Extract text from your PDF or Word document locally and cross-reference competencies with your target job description using our 100-point ATS scoring engine.
+        Upload your resume to calculate your 100-point ATS score across 7 dimensions, find out what jobs you qualify for, and see which skills to add to maximize interview callbacks.
       </p>
     </div>
 
@@ -122,7 +122,7 @@
       <!-- Right Column: Job Description Input -->
       <div class="input-card">
         <div class="card-title-row">
-          <h3><i class="fa-solid fa-bullseye" style="color:var(--primary);"></i> 2. Target Job Description</h3>
+          <h3><i class="fa-solid fa-bullseye" style="color:var(--primary);"></i> 2. Target Career Track / Job Posting (Optional)</h3>
           <button type="button" class="btn-sample-job" id="btn-sample-job" title="Load sample Senior Full-Stack role">
             <i class="fa-solid fa-clipboard-check"></i> Load Sample Job
           </button>
@@ -131,13 +131,13 @@
         <textarea 
           class="job-desc-textarea" 
           id="job-desc-input" 
-          placeholder="Paste the target job posting or requirements here to enable keyword, skill-gap, and experience matching... (e.g. Senior Software Engineer responsibilities and technical qualifications)"
+          placeholder="Optional: Paste a target job posting or requirements. If left blank, CareerGuide.AI will automatically benchmark against your closest role archetype to recommend what jobs you can land and which skills to add."
           aria-label="Target job description textarea"
         ></textarea>
 
         <div class="textarea-footer">
           <span id="char-count">0 characters</span>
-          <span>Minimum 30 characters required</span>
+          <span>Optional: Leave blank for automated career matching</span>
         </div>
       </div>
     </div>
@@ -145,7 +145,7 @@
     <!-- Actions & Validation -->
     <div class="analyzer-actions">
       <button type="button" class="btn btn-primary btn-lg" id="btn-analyze" style="min-width: 240px;">
-        <i class="fa-solid fa-wand-magic-sparkles"></i> Analyze Resume
+        <i class="fa-solid fa-compass"></i> Get Career Guidance & ATS Score
       </button>
       <button type="button" class="btn btn-secondary btn-lg" id="btn-reset-top" style="margin-left: 10px; display: none;">
         <i class="fa-solid fa-arrow-rotate-left"></i> Reset
@@ -170,13 +170,13 @@
       <div class="results-banner">
         <div class="results-banner-left">
           <i class="fa-solid fa-circle-check" style="font-size: 1.2rem;"></i>
-          <span>100-Point ATS Analysis Complete: Evaluated via deterministic scoring engine.</span>
+          <span>100-Point Career & ATS Analysis Complete: Evaluated via deterministic scoring engine.</span>
         </div>
         <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-          <a href="#career-advisory-section" class="btn btn-secondary btn-sm" style="font-size:0.75rem; padding:4px 12px; background:#fff;">
+          <a href="#career-advisory-section" class="btn btn-secondary btn-sm" style="font-size:0.75rem; padding:4px 12px; background:var(--surface-elevated); border:1px solid var(--border-subtle); color:var(--text-main);">
             <i class="fa-solid fa-compass" style="color:var(--primary);"></i> Perfect Job Match & Roadmap
           </a>
-          <span class="pill-badge" id="results-doc-badge" style="background:#fff; border-color:#a7f3d0; font-size:0.75rem;">Document Verified</span>
+          <span class="pill-badge" id="results-doc-badge" style="background:var(--surface-elevated); border-color:var(--success-border); font-size:0.75rem;">Document Verified</span>
         </div>
       </div>
 
@@ -468,7 +468,7 @@
     <div class="container">
       <div class="footer-bottom" style="border:none; padding-top:0;">
         <div>
-          &copy; <span id="current-year">2026</span> ResumeX AI – AI Resume Analyzer & Career Advisor.
+          &copy; <span id="current-year">2026</span> CareerGuide.AI – AI Career Guidance & ATS Resume Intelligence.
         </div>
         <div style="display:flex; gap:16px;">
           <a href="index.html">Home</a>

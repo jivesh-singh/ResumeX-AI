@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- * ResumeX AI - Supabase Authentication & Session Management Module
+ * CareerGuide.AI - Supabase Authentication & Session Management Module
  * ============================================================================
  * 
  * Handles real Supabase email/password registration, login, logout,
@@ -208,6 +208,7 @@
 
     // Clear any local offline demo user state
     if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('careerguide_demo_user');
       localStorage.removeItem('resumex_demo_user');
     }
 
@@ -246,7 +247,7 @@
     if (!client) {
       // Check offline demo fallback
       if (typeof localStorage !== 'undefined') {
-        const demo = localStorage.getItem('resumex_demo_user');
+        const demo = localStorage.getItem('careerguide_demo_user') || localStorage.getItem('resumex_demo_user');
         if (demo) {
           try { return JSON.parse(demo); } catch (e) { return null; }
         }
@@ -282,7 +283,7 @@
     if (!isConfigured()) {
       // In unconfigured state, check if user activated offline demo mode
       if (typeof localStorage !== 'undefined') {
-        const demoUser = localStorage.getItem('resumex_demo_user');
+        const demoUser = localStorage.getItem('careerguide_demo_user') || localStorage.getItem('resumex_demo_user');
         if (demoUser) {
           try {
             return JSON.parse(demoUser);

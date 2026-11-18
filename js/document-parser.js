@@ -1,5 +1,5 @@
 /**
- * ResumeX AI - Document Parser Module
+ * CareerGuide.AI - Document Parser Module
  * Handles local in-browser text extraction from PDF, DOCX, and TXT files.
  * Uses PDF.js for PDF extraction and Mammoth.js for DOCX extraction.
  * Detects scanned/image-only PDFs and provides OCR-required warnings.

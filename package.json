@@ -1,7 +1,7 @@
 {
-  "name": "resumex-ai",
+  "name": "careerguide-ai",
   "version": "1.0.0",
-  "description": "ResumeX AI – AI Resume Analyzer & Career Advisor",
+  "description": "CareerGuide.AI – AI Career Guidance & ATS Resume Intelligence",
   "main": "serve.js",
   "scripts": {
     "start": "node serve.js",
@@ -13,15 +13,19 @@
     "@supabase/supabase-js": "^2.48.1"
   },
   "keywords": [
+    "careerguide-ai",
+    "career-guidance",
     "resume-analyzer",
     "ats-scanner",
     "threejs",
     "chartjs",
     "career-advisor",
+    "job-matching",
+    "skill-gap",
     "pdfjs",
     "mammoth",
     "supabase"
   ],
-  "author": "ResumeX AI Team",
+  "author": "CareerGuide.AI Team",
   "license": "MIT"
 }

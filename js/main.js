@@ -1,5 +1,5 @@
 /**
- * ResumeX AI - Main Application Script
+ * CareerGuide.AI - Main Application Script
  * Handles global UI, navigation, header states, and notifications
  */
 
@@ -89,7 +89,7 @@ function initFooterYear() {
  * Checks client-side auth state in localStorage
  */
 function initAuthState() {
-  const userJson = localStorage.getItem('resumex_user');
+  const userJson = localStorage.getItem('careerguide_user') || localStorage.getItem('resumex_user');
   const authBtn = document.getElementById('nav-auth-btn');
 
   if (userJson && authBtn) {

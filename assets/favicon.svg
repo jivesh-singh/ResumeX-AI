@@ -1,11 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none">
   <defs>
     <linearGradient id="grad-fav" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#4F46E5" />
-      <stop offset="100%" stop-color="#8B5CF6" />
+      <stop offset="0%" stop-color="#6366F1" />
+      <stop offset="50%" stop-color="#8B5CF6" />
+      <stop offset="100%" stop-color="#06B6D4" />
     </linearGradient>
   </defs>
   <rect width="32" height="32" rx="8" fill="url(#grad-fav)"/>
-  <path d="M10 9H20L23 12V23C23 23.55 22.55 24 22 24H10C9.45 24 9 23.55 9 23V10C9 9.45 9.45 9 10 9Z" fill="white"/>
-  <path d="M16 14L17 12L18 14L20 15L18 16L17 18L16 16L14 15L16 14Z" fill="#6366F1"/>
+  <rect width="32" height="32" rx="8" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+  <path d="M10 8H20L24 12V24C24 24.55 23.55 25 23 25H10C9.45 25 9 24.55 9 24V9C9 8.45 9.45 8 10 8Z" fill="#0f111a" stroke="rgba(255,255,255,0.9)" stroke-width="1"/>
+  <path d="M16 13L17.5 10.5L19 13L21.5 14.5L19 16L17.5 18.5L16 16L13.5 14.5L16 13Z" fill="#38BDF8"/>
 </svg>

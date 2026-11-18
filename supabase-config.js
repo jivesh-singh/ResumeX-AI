@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- * ResumeX AI - Supabase Configuration & Client Provider
+ * CareerGuide.AI - Supabase Configuration & Client Provider
  * ============================================================================
  * 
  * ⚠️ SECURITY INSTRUCTIONS:

@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- * ResumeX AI - Supabase Authentication & Route Guard Test Suite
+ * CareerGuide.AI - Supabase Authentication & Route Guard Test Suite
  * ============================================================================
  * 
  * Verifies:
@@ -67,7 +67,7 @@ async function itAsync(description, fn) {
 }
 
 console.log('====================================================');
-console.log('🧪 ResumeX AI - Supabase Auth Test Suite');
+console.log('🧪 CareerGuide.AI - Supabase Auth Test Suite');
 console.log('====================================================\n');
 
 // ----------------------------------------------------------------------------

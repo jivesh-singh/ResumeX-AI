@@ -1,12 +1,12 @@
 /**
- * ResumeX AI - Supabase Connection Test
+ * CareerGuide.AI - Supabase Connection Test
  * Executes live diagnostics on the Supabase client configuration.
  */
 
 const SupabaseConfig = require('../supabase-config.js');
 
 console.log('====================================================');
-console.log('🔌 ResumeX AI - Supabase Connection Diagnostics');
+console.log('🔌 CareerGuide.AI - Supabase Connection Diagnostics');
 console.log('====================================================\n');
 
 (async () => {

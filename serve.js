@@ -1,5 +1,5 @@
 /**
- * ResumeX AI - Local Development Static Server
+ * CareerGuide.AI - Local Development Static Server
  * Runs out of the box using Node.js built-in modules (zero external dependencies).
  * Usage: node serve.js
  */
@@ -65,7 +65,7 @@ const server = http.createServer((req, res) => {
 
 server.listen(PORT, () => {
   console.log('========================================================');
-  console.log('🚀 ResumeX AI Local Development Server');
+  console.log('🚀 CareerGuide.AI Local Development Server');
   console.log(`📡 URL: http://localhost:${PORT}`);
   console.log(`📁 Directory: ${__dirname}`);
   console.log('💡 Press Ctrl+C in your terminal to stop the server.');
